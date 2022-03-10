@@ -1,8 +1,11 @@
+//Credit to mkreiser for example script
+
 const _ = require('lodash');
 //const { Client } = require('./node-dev');
 const { Client } = require("espn-fantasy-football-api/node");
 
 const myClient = new Client({
+  //Using random league Keyon owns. It is private, which means you need the espnS2 and SWID seeds. A public league will not need this
   leagueId:1151092,
   espnS2: "AECAlZGGZ%2BKVVazn84JPRPKlzGn8c0h0mgcW%2BmMD7rZbRi7Eo%2FD0AftzOhmp%2Bp2OXGN4jU37nau7amjPktismejCclO5Nw2itHBLxlMp5ho0TL9dQYfP8ElaaVYyi8r1rL5VfDEz9ZvVDKtNE2kqhfi5yeNP5G4H75oQV7I6j4oIqUTPdvXSW6KExsDka6tNgzr5Nlrbo1VLR2v7wqsUwnPHjL2y930EX9xhSzVCvN7Nhq47eb%2B%2FTed93BQHkkt1zSj0pk6BF0cQZVSWymyq5%2BSV",
   SWID:"D3FB8C91-2170-4F49-9BF1-CFF8AABC99A1"
