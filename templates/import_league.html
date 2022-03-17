@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}Import League{% endblock %}
+
+{% block body %}
+	<h2>Import New ESPN League</h2>
+	<form action="" method="post">
+		<p class="form">Select League Type:</p>
+		<input type="radio" id="guillotine" name="league_type" value="guillotine">
+		<label for="guillotine" class="radio_button">Guillotine</label><br>
+		<input type="radio" id="vampire" name="league_type" value="vampire">
+		<label for="vampire" class="radio_button">Vampire</label><br>
+		<input type="radio" id="pirate" name="league_type" value="pirate">
+		<label for="pirate" class="radio_button">Pirate</label><br>
+
+		<br>
+
+		<label for="league_id" class="label_text">ESPN League ID: </label>
+		<input type="text" id="league_id" name="league_id">
+	</form>
+{% endblock %}
