@@ -20,7 +20,6 @@ athlete_list = [15818, 3916387] # list of potential athletes first one is Keenan
 for athlete_id in athlete_list:
     access_url = athlete_url.format(athlete_id=athlete_id)
     res = requests.get(access_url)
-    # content = json.loads(res.content)
 
     if res.ok:
         data = res.json() # converting response from API to json response (list)
@@ -34,6 +33,7 @@ for athlete_id in athlete_list:
 
         df_final = pd.concat([df_stats, event_column], axis=1)
 
+        df_final['athlete_id'] = athlete_id         # add id f
         event_column = df_final.pop('eventId')  # moving the event column to front
         df_final.insert(0, 'eventId', event_column)
         print(df_final)
