@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}Import League{% endblock %}
+
+{% block body %}
+	<h2>Import New ESPN League</h2>
+	<h3>League imported successfully.</h3>
+	<p>League Type: {{league_type}}</p>
+	<p>League ID: {{league_id}}</p>
+	<a href="/user/{{user}}">Click here to return to account page.</a>
+{% endblock %}

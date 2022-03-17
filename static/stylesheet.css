@@ -1,0 +1,41 @@
+body {
+	background-color: #5565FA;
+}
+
+h1 {
+	text-align: center;
+	background-color: #1321A6;
+	font-size: 3em;
+}
+
+h2 {
+	font-size: 2em;
+	text-align: center;
+}
+
+table {
+	border: 1px solid black;
+	width: 100%;
+	margin-top: 2vh;
+}
+
+td  {
+	border: 1px solid black;
+	text-align: center;
+	width: 25%;
+}
+
+th {
+	border: 1px solid black;
+	text-align: center;
+	width: 25%;
+	font-size: 20px;
+}
+
+.form {
+	font-size: 1.5em;
+}
+
+.radio_button, .label_text {
+	font-size: 1.5em;
+}

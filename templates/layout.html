@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<!-- Layout styled off of flaskr and fl08_adv_templates examples -->
+<html>
+<head>
+	<title>{% block title %}CPS43 Catering{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}" />
+</head>
+<body>
+	{% if username %}
+		<form action="/logout">
+			<input class="logout" type="submit" value="Logout" />
+		</form>
+	{% endif %}
+	<h1>Funky Fantasy Hosting</h1>
+	{% block body %}
+	{% endblock %}
+</body>
+</html>
