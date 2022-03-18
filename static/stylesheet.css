@@ -1,11 +1,13 @@
 body {
-	background-color: #5565FA;
+	margin: 0;
 }
 
 h1 {
+	margin-top: 0;
 	text-align: center;
-	background-color: #1321A6;
-	font-size: 3em;
+	background-color: #1729e8;
+	font-size: 4em;
+	padding-bottom: 10px;
 }
 
 h2 {
@@ -38,4 +40,33 @@ th {
 
 .radio_button, .label_text {
 	font-size: 1.5em;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #1729e8;
+  font-size: 1.5em;
+}
+
+.topnav a {
+	text-align: center;
+	color: black;
+	padding: 10px 12px;
+	text-decoration: none;
+}
+
+.topnav a:hover, .topnav b:hover {
+  background-color: #2d63ed;
+}
+
+.topnav a.active {
+  background-color: #e9f018;
+}
+
+.fLeft {
+	float: left;
+}
+
+.fRight {
+	float: right;
 }
