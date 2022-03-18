@@ -40,7 +40,11 @@ def initdb_command():
 # Redirect to login by default (idea from fl06_session.oy)
 @app.route("/")
 def default():
-	return redirect(url_for("import_league"))
+	return redirect(url_for("home"))
+
+@app.route("/home")
+def home():
+	return render_template("home.html")
 
 @app.route("/new_league/", methods=["GET", "POST"])
 def import_league():
@@ -53,3 +57,15 @@ def import_league():
 									user="username", league_type=request.form["league_type"], league_id=request.form["league_id"])
 		# else
 		#	return render_template("import_failed")
+
+@app.route("/account")
+def account_screen():
+	return render_template("account.html")
+
+@app.route("/leagues")
+def leagues_screen():
+	return render_template("leagues.html")
+
+@app.route("/logout")
+def logout():
+	return redirect(url_for("home"))
