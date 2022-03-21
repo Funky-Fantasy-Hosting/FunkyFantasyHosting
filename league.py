@@ -1,5 +1,6 @@
 class League:
-    def __init__(self, name, type, rosterMax, commish):
+    def __init__(self, id, name, type, rosterMax, commish):
+        self.id = id
         self.rosterMax = rosterMax
         self.name = name
         self.type = type
@@ -25,6 +26,9 @@ class League:
 
     def __repr__(self):
         return None
+
+    def get_id():
+        return id
 
     def add_team():
         return None
