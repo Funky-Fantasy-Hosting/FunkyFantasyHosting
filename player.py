@@ -1,7 +1,8 @@
 class Player:
-    def __init__(self, name, nflTeam, leagueTeam, injuryStatus, playerRankings, news, playerBio):
+    def __init__(self, name: str, nflTeam: str, leagueTeam: str, injuryStatus: str, playerRankings: int, news: str, playerBio: str):
         self.name = name
         self.nflTeam = nflTeam
+        self.leagueTeam = leagueTeam
         self.leagueStatus = None
         self.fantasyMetrics = None
         self.injuryStatus = injuryStatus
