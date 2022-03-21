@@ -1,5 +1,6 @@
 class Player:
-    def __init__(self, name: str, nflTeam: str, leagueTeam: str, injuryStatus: str, playerRankings: int, news: str, playerBio: str):
+    def __init__(self, id: int, name: str, nflTeam: str, leagueTeam: str, injuryStatus: str, playerRankings: int, news: str, playerBio: str):
+        self.id = id
         self.name = name
         self.nflTeam = nflTeam
         self.leagueTeam = leagueTeam
@@ -15,3 +16,6 @@ class Player:
 
     def __repr__(self):
         return None
+
+    def get_id(self):
+        return self.id

@@ -1,9 +1,14 @@
+import league, matchup, player, playoffs, user
+
+#Defining the type of playerList, which is a list of players
+playerListType = 'list[player.Player]'
+
 class Team:
-    def __init__(self, name, playerList, owner, FAABBudget):
+    def __init__(self, name: str, playerList: playerListType, owner: int, FAABBudget: int):
         self.name = name
         self.playerList = playerList
         self.startingLineup = None
-        self.owner = owner
+        self.owner = owner #The ID if the user that owns this team.
         self.nextMatchup = None
         self.status = None
         self.FAABBudget = FAABBudget
@@ -12,7 +17,11 @@ class Team:
         self.record = None
         self.rank = None
 
-    def add_player():
+    def add_player(self, player: player.Player):
+        for plyr in self.playerList:
+            if(player.get_id() == plyr.get.id()):
+                return False
+        self.playerList.add(player)
         return None
 
 
