@@ -14,7 +14,8 @@ class League:
 
 
 
-    def __init__(self, name: str, type: int, teamList: 'list[team.Team]', rosterMax: int, commish: user.User, playerList: 'list[player.Player]', matchupList: 'list[matchup.Matchup]', size: int, waiverType: int, FAABBudget: int, waiverDropPeriod: int,):
+    def __init__(self, id: int, name: str, type: int, teamList: 'list[team.Team]', rosterMax: int, commish: user.User, playerList: 'list[player.Player]', matchupList: 'list[matchup.Matchup]', size: int, waiverType: int, FAABBudget: int, waiverDropPeriod: int,):
+        self.id = id
         self.name = name
         self.type = type
         self.teamList = teamList
@@ -43,11 +44,29 @@ class League:
 
     def __repr__(self):
         return None
-    
+
+    def get_id():
+        return id
+
+    #No checking is happening, we need to check to make sure that all the steps that happen in this function actually happen
+    #If dropping player 2 fails somehow, we have to be able to undo or not do the dropping of player 1
+    def trade_player(self, player1: player.Player, player2: player.Player):
+        team1 = self.teamList(self.find_team(player1.get_league_team()))
+        team2 = self.teamList(self.find_team(player2.get_league_team()))
+
+        team1.drop_player(player1)
+        team2.drop_player(player2)
+        team1.add_player(player2)
+        team2.add_player(player1)
+
+        return True
+
+    #Sorts the team list from worst team (index 0) to best team
     def sort_team_list(self):
         self.teamList.sort(key = lambda x: x.eval_record(self.winWeight, self.tieWeight, self.lossWeight))
         return True
 
+    #Adds a team to the team list
     def add_team(self, team: team.Team):
         for tm in self.teamList:
             if tm.get_id() == team.get_id(): #Teams cannot have the same ID
@@ -66,6 +85,15 @@ class League:
             index += 1
         return False
 
+    def find_team(self, id: int):
+        index = 0
+        for tm in self.teamList:
+            if tm.get_id() == id:
+                return index
+            index += 1
+        return -1
+
+    #Remove the last place team from the league
     def guillotine_team(self):
         self.sort_team_list()
         return self.remove_team(self.teamList(0))
@@ -73,9 +101,14 @@ class League:
     def set_scoring():
         return None
 
-    def set_matchup():
-        return None
+    def set_matchup(self, homeTeam: team.Team, awayTeam: team.Team, week: int):
+        if self.find_team(homeTeam.get_id()) == -1 or self.find_team(awayTeam.get_id()) == -1:
+            return False
+        
+        newMatchup = matchup.Matchup(homeTeam, awayTeam, self.get_id(), week)
 
+        return True
+        
     def set_FAAB():
         return None
 
