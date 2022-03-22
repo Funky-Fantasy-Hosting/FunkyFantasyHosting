@@ -47,20 +47,29 @@ def home():
 	return render_template("home.html")
 
 @app.route("/new_league/", methods=["GET", "POST"])
-def import_league():
+def import_league(errMessage=None):
 	if request.method == "GET":
-		return render_template("import_league.html")
+		if (errMessage):
+			return render_template("import_league.html", message=errMessage)
+		else:
+			return render_template("import_league.html")
 	else:
 		# Grab League information from ESPN
-		# if (Check to make sure ID was legit):
+		if (request.form["league_id"] == 1):
 			return render_template("import_successful.html", 
 									user="username", league_type=request.form["league_type"], league_id=request.form["league_id"])
-		# else
-		#	return render_template("import_failed")
+		else:
+			return redirect(url_for("import_league", errMessage="Invalid ESPN League ID"))
 
 @app.route("/account")
-def account_screen():
-	return render_template("account.html")
+def account_screen(username=None):
+	# Test account information
+	teams = [
+		{"name": "Vipers", "league": "Pittsburgh", "wins": 10, "loses": 7},
+		{"name": "Panthers", "league": "Pitt", "wins": 2, "loses": 15},
+		{"name": "Dogs", "league": "Kennel", "wins": 14, "loses": 3},
+	]
+	return render_template("account.html", username="cps43", teams=teams)
 
 @app.route("/leagues")
 def leagues_screen():

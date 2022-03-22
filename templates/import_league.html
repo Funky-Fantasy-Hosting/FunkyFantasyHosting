@@ -14,6 +14,9 @@
 
 {% block body %}
 	<h2>Import New ESPN League</h2>
+	{% if message %}
+		<h3>{{ message }}</h3>
+	{% endif %}
 	<form action="" method="post">
 		<p class="form">Select League Type:</p>
 		<input type="radio" id="guillotine" name="league_type" value="guillotine">
