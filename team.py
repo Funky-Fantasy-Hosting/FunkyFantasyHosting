@@ -14,8 +14,12 @@ class Team:
         self.FAABBudget = FAABBudget
         self.waiverPriority = None
         self.rosterSize = None
-        self.record = None
+        self.record = dict.fromkeys(['Wins', 'Ties', 'Losses'], 0)
         self.rank = None
+
+    def eval_record(self, winWeight, tieWeight, lossWeight):
+        return (self.record["Wins"] * winWeight + self.record["Ties"] * tieWeight + self.record["Losses"] * lossWeight)
+
 
     def add_player(self, player: player.Player):
         for plyr in self.playerList:
