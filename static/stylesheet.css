@@ -1,11 +1,17 @@
 body {
-	background-color: #5565FA;
+	margin: 0;
+	background-color: white;
 }
 
 h1 {
+	margin-top: 0;
 	text-align: center;
-	background-color: #1321A6;
-	font-size: 3em;
+	background-color: white;
+	font-size: 4em;
+	padding-bottom: 5px;
+	color: #eddc21;
+	-webkit-text-stroke-width: 2px;
+  	-webkit-text-stroke-color: black;
 }
 
 h2 {
@@ -14,22 +20,20 @@ h2 {
 }
 
 table {
-	border: 1px solid black;
-	width: 100%;
-	margin-top: 2vh;
+	border: 2px sold black;
+	width: 80%;
+	background-color: white;
 }
 
 td  {
-	border: 1px solid black;
-	text-align: center;
-	width: 25%;
-}
-
-th {
-	border: 1px solid black;
 	text-align: center;
 	width: 25%;
 	font-size: 20px;
+}
+
+th {
+	text-align: center;
+	font-size: 40px;
 }
 
 .form {
@@ -38,4 +42,39 @@ th {
 
 .radio_button, .label_text {
 	font-size: 1.5em;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #1729e8;
+  font-size: 1.5em;
+  padding: 10px;
+}
+
+.topnav a {
+	text-align: center;
+	color: black;
+	padding: 10px 12px;
+	text-decoration: none;
+}
+
+.topnav a:hover, .topnav b:hover {
+  background-color: #2d63ed;
+}
+
+.topnav a.active {
+  background-color: #e9f018;
+}
+
+.fLeft {
+	float: left;
+}
+
+.fRight {
+	float: right;
+}
+
+.fCenter {
+	margin-left: auto;
+	margin-right: auto;
 }

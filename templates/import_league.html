@@ -1,9 +1,22 @@
 {% extends "layout.html" %}
 
-{% block title %}Import League{% endblock %}
+{% block title %}FFH - Import League{% endblock %}
+
+{% block navbar %}
+	<div class="topnav">
+		<a class="fLeft" href="/home">Home</a>
+		<a class="fLeft" href="/account">Account</a>
+		<a class="fLeft active" href="/leagues">Leagues</a>
+
+		<a class="fRight" href="/logout">Logout</a>
+	</div>
+{% endblock %}
 
 {% block body %}
 	<h2>Import New ESPN League</h2>
+	{% if message %}
+		<h3>{{ message }}</h3>
+	{% endif %}
 	<form action="" method="post">
 		<p class="form">Select League Type:</p>
 		<input type="radio" id="guillotine" name="league_type" value="guillotine">

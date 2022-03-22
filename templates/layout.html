@@ -6,11 +6,15 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}" />
 </head>
 <body>
-	{% if username %}
-		<form action="/logout">
-			<input class="logout" type="submit" value="Logout" />
-		</form>
-	{% endif %}
+	{% block navbar %}
+		<div class="topnav">
+			<a class="fLeft active" href="/home">Home</a>
+			<a class="fLeft" href="/account">Account</a>
+			<a class="fLeft" href="/leagues">Leagues</a>
+
+			<a class="fRight" href="/logout">Logout</a>
+		</div>
+	{% endblock %}
 	<h1>Funky Fantasy Hosting</h1>
 	{% block body %}
 	{% endblock %}

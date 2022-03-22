@@ -133,3 +133,6 @@ dmypy.json
 
 # Espn API (install manually)
 /espn-api
+
+# SQL Database File
+FFH.db
