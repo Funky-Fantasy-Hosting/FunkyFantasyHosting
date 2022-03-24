@@ -4,6 +4,7 @@ import numpy as np
 # from bs4 import BeautifulSoup as BS
 import warnings
 import json
+from google.cloud import bigquery
 
 warnings.filterwarnings('ignore')
 
@@ -14,6 +15,11 @@ np.set_printoptions(linewidth=desired_width)
 pd.set_option('display.max_columns', 25)
 
 df_final = pd.DataFrame()
+
+# initialize bigquery
+client = bigquery.Client()
+
+table_id = "funky-fantasy-hosting-1.espn_nfl_player_bios.nfl_player_bio"
 
 def get_player_id(row):
     res = requests.get(row)             # pass the URL from the row
@@ -89,13 +95,15 @@ def check_position(pos):
 
     return result
 
+
 espn_api = 'https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes?limit=1000&page={pagenumber}'
-#espn_api = 'https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes?limit=1001&page=1'
+# espn_api = 'https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes?limit=1000&page=1'
 
 # when decide to run, need to cycle through all the page numbers
 for i in range(1, 18):
 
     res = requests.get(espn_api.format(pagenumber = i))
+    #res = requests.get(espn_api)
 
     if res.ok:
         data = res.json()           # converting response from API to json response (list)
@@ -112,6 +120,20 @@ for i in range(1, 18):
                 df_final.drop(df_final.tail(1).index, inplace=True)
 
 
-df_final.to_csv('df_final.csv')
+# df_final.to_csv('df_final.csv')
 print(df_final.head())
+
+
+job = client.load_table_from_dataframe(
+    df_final, table_id,
+)  # Make an API request.
+job.result()  # Wait for the job to complete.
+
+table = client.get_table(table_id)  # Make an API request.
+print(
+    "Loaded {} rows and {} columns to {}".format(
+        table.num_rows, len(table.schema), table_id
+    )
+)
+
 
