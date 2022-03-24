@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block navbar %}
+	<div class="topnav">
+	
+		<a class="fLeft" href="/home">Home</a>
+		<a class="fLeft" href="/account">Account</a>
+		<a class="fLeft" href="/leagues">Leagues</a>
+
+		<a class="fRight active" href="/login">Login</a>
+		<a class="fRight" href="/create_account">Create Account</a>
+		<a class="fRight" href="/logout">Logout</a>
+	</div>
+{% endblock %}
+
+{% block body %}
+	<p>Enter your login information below</p>
+	<!-- change value of action to represent appropriate location to send form data
+	(may need modified strategy since server will need to verify and respond)-->
+	
+	<form action="/action_page.php" method="get">
+	  <label for="username/email">Username or Email Adress:</label>
+	  <input type="text" id="username/email" name="username/email"><br><br>
+	  <label for="password">Password:</label>
+	  <input type="text" id="password" name="password"><br><br>
+	  <input type="submit" value="Submit">
+	</form>
+	
+{% endblock %}
