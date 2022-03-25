@@ -15,7 +15,14 @@ pd.set_option('display.max_columns', 25)
 
 # example of pulling stats for Lamar Jackson from his gamelog page on ESPN
 athlete_url = 'https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/{athlete_id}/gamelog'
-athlete_list = [15818, 3916387] # list of potential athletes first one is Keenan Allen, next is Lamar Jackson
+athlete_list = [15818, 3916387] # list of potential athletes first one is Keenan Allen, next is Lamar Jackson 3916387
+df_gamelog_final = pd.DataFrame()   # will concat all players to this final df
+
+def convert_to_dict(row):
+    row_dict = row.to_dict()
+    print(row_dict)
+
+
 
 for athlete_id in athlete_list:
     access_url = athlete_url.format(athlete_id=athlete_id)
@@ -26,6 +33,7 @@ for athlete_id in athlete_list:
 
         df_nested_list = pd.json_normalize(data['seasonTypes'], record_path =['categories'])     # cleans up JSON data down to category level where data is
         df1 = pd.DataFrame(df_nested_list['events'])        # goes one level down into 'events', which gives us a list of dictionaries again
+        print(df1)
         df1_tolist = df1['events'].tolist()         # since it is a list of dictionaries inside a df, have to make it an actual list
         df2 = pd.DataFrame(df1_tolist[0])           # take the list and turn back into a df
         df_stats = pd.DataFrame(df2['stats'].to_list(), columns=data['displayNames'])
@@ -37,5 +45,28 @@ for athlete_id in athlete_list:
         event_column = df_final.pop('eventId')  # moving the event column to front
         df_final.insert(0, 'eventId', event_column)
         print(df_final)
+        # df_final is a df where each column is a stat, and there is event ID, and athlete id. Keeping intact, just in
+        # case we prefer that in the future
+
+        # print(data['events'])  # keyed off eventid
+        # print(data['events']['401326368']['week'])  # gets me game week
+        # print(data['events']['401326368']['gameDate'])  # gets actual game
+
+
+        df_test = pd.DataFrame()            # creating new dataframe so we keep original format just in case
+        df_test = df_final                  # copy the original dataframe so can convert into a dictionary
+        df_test = df_test.drop(['athlete_id'], axis = 1)    # remove athlete id before collapsing
+        df_test = df_test.to_dict(orient='records')         # df_test is now a dictionary list
+
+        df_gamelog = pd.DataFrame(columns=['athlete_id'])
+        df_gamelog.at[0, 'athlete_id'] = athlete_id
+        for event in df_test:
+            df_gamelog.insert(len(df_gamelog), 'week{no}'.format(no=data['events'][event['eventId']]['week']), [event], True)
+
+        df_gamelog_final = df_gamelog_final.append(df_gamelog)
+        df_gamelog_final.to_csv('df_gamelog_final.csv')
+        print(df_gamelog_final.head())
+
+
         # df_final.to_csv('df_final.csv')     # saving to csv for fun
 
