@@ -119,6 +119,9 @@ for i in range(1, 18):
             if not check_position(df_final.iloc[-1]['pos']) or not df_final.iloc[-1]['active_status']:
                 df_final.drop(df_final.tail(1).index, inplace=True)
 
+# need to drop any row that has blank for bio stuff like weight, age, DOB (not relevant players)
+df_final['player_weight'].replace('', np.nan, inplace=True)     # change blank strings to official nan
+df_final.dropna(axis=0, subset=['player_weight'], inplace=True) # drop any row with nan
 
 # df_final.to_csv('df_final.csv')
 print(df_final.head())
