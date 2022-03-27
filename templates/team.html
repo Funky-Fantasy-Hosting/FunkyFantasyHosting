@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}FFH - Import League{% endblock %}
+{% block title %}Funky Fantasy Hosting - Team{% endblock %}
 
 {% block navbar %}
 	<div class="topnav">
@@ -18,9 +18,18 @@
 {% endblock %}
 
 {% block body %}
-	<h2>Import New ESPN League</h2>
-	<h3>League imported successfully.</h3>
-	<p>League Type: {{league_type}}</p>
-	<p>League ID: {{league_id}}</p>
-	<a href="/account">Click here to return to account page.</a>
+	<table class="fCenter">
+		<tr>
+			<th>Position</th>
+			<th>Player Name</th>
+			<th>Points</th>
+		</tr>
+		{% for player in team %}
+			<tr>
+				<td>{{ player.position }}</td>
+				<td><a href={{ player.link }} target="_blank" rel="noopener noreferrer">{{ player.name }}</a></td>
+				<td>{{ player.points }}</td>
+			</tr>
+		{% endfor %}
+	</table>
 {% endblock %}
