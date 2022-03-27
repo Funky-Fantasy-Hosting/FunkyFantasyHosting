@@ -78,3 +78,12 @@ def leagues_screen():
 @app.route("/logout")
 def logout():
 	return redirect(url_for("home"))
+
+@app.route('/login')
+def login():
+    return render_template("login.html")
+
+
+@app.route('/create_account')
+def create_account():
+    return render_template("create_account.html")

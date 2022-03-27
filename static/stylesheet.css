@@ -6,8 +6,9 @@ body {
 h1 {
 	margin-top: 0;
 	text-align: center;
-	background-color: white;
-	font-size: 4em;
+	background-color: #5f9ea0;
+	font-family: "Papyrus", fantasy;
+	font-size: 4.5em;
 	padding-bottom: 5px;
 	color: #eddc21;
 	-webkit-text-stroke-width: 2px;
@@ -64,6 +65,7 @@ th {
 
 .topnav a.active {
   background-color: #e9f018;
+  text-decoration: underline;
 }
 
 .fLeft {
