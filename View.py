@@ -62,14 +62,9 @@ def import_league(errMessage=None):
 			return redirect(url_for("import_league", errMessage="Invalid ESPN League ID"))
 
 @app.route("/account")
-def account_screen(username=None):
+def account_screen(user=None, userTeam=None):
 	# Test account information
-	teams = [
-		{"name": "Vipers", "league": "Pittsburgh", "wins": 10, "loses": 7},
-		{"name": "Panthers", "league": "Pitt", "wins": 2, "loses": 15},
-		{"name": "Dogs", "league": "Kennel", "wins": 14, "loses": 3},
-	]
-	return render_template("account.html", username="cps43", teams=teams)
+	return render_template("account.html", username=user, team=userTeam)
 
 @app.route("/leagues")
 def leagues_screen():
@@ -83,7 +78,16 @@ def logout():
 def login():
     return render_template("login.html")
 
-
 @app.route('/create_account')
 def create_account():
     return render_template("create_account.html")
+
+@app.route("/team")
+def team(username=None, team=None):
+	teamList= [
+		{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "points": 10},
+		{"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "points": 20},
+		{"link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "points": 13},
+		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "points": 5}
+	]
+	return render_template("team.html", username="TestUser", team=teamList)
