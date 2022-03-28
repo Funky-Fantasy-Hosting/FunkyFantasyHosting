@@ -21,7 +21,7 @@
 	{% if username %}
 		<table class="fCenter">
 			<tr>
-				<th class="Pos">Position</th>
+				<th class="Pos">Pos</th>
 				<th class="Name">Player Name</th>
 				<th class="Opp">Opponent</th>
 				<th class="Points">Points</th>
@@ -29,6 +29,16 @@
 			{% for player in team %}
 				<tr class="rBorder">
 					<td class="Pos">{{ player.position }}</td>
+					<td class="rBorder Name"><a href={{ player.link }} target="_blank" rel="noopener noreferrer">{{ player.name }}</a></td>
+					<td class="rBorder Opp">{{ player.opp }}</td>
+					<td class="Points">{{ player.points }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+		<table class="fCenter">
+			{% for player in bench %}
+				<tr class="rBorder">
+					<td class="Pos">Bench</td>
 					<td class="rBorder Name"><a href={{ player.link }} target="_blank" rel="noopener noreferrer">{{ player.name }}</a></td>
 					<td class="rBorder Opp">{{ player.opp }}</td>
 					<td class="Points">{{ player.points }}</td>

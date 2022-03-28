@@ -72,13 +72,15 @@ def leagues_screen(user=None):
 
 @app.route("/team")
 def team(user=None, team=None):
-	teamList= [
+	teamList = [
 		{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "opp": "Browns", "points": 10},
 		{"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "opp": "Browns", "points": 20},
 		{"link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "opp": "Browns", "points": 13},
+	]
+	benchList = [
 		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5}
 	]
-	return render_template("team.html", username="TestUser", team=teamList)
+	return render_template("team.html", username="TestUser", team=teamList, bench=benchList)
 
 @app.route("/logout")
 def logout():
