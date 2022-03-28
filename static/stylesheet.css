@@ -73,20 +73,16 @@ a {
   background-color: #e9f018;
 }
 
-.Pos {
+.Pos, .Record {
 	width: 10%;
 }
 
-.Name {
+.Name, .Opp, .Points {
 	width: 30%;
 }
 
-.Opp {
-	width: 30%;
-}
-
-.Points {
-	width: 30%;
+.League, .Team {
+	width: 45%;
 }
 
 .fLeft {

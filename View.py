@@ -37,15 +37,17 @@ def initdb_command():
 	db.drop_all()
 	db.create_all()
 
-# Redirect to login by default (idea from fl06_session.oy)
+# Redirect to home by default
 @app.route("/")
 def default(user=None):
 	return redirect(url_for("home", user=user))
 
+# Home Screen
 @app.route("/home")
 def home(user=None):
 	return render_template("home.html", username=user)
 
+# New League Screen
 @app.route("/new_league/", methods=["GET", "POST"])
 def import_league(user=None, errMessage=None):
 	if request.method == "GET":
@@ -61,17 +63,29 @@ def import_league(user=None, errMessage=None):
 		else:
 			return redirect(url_for("import_league", user=user, errMessage="Invalid ESPN League ID"))
 
-@app.route("/account")
-def account_screen(user=None, userTeam=None):
-	# Test account information
-	return render_template("account.html", username=user, team=userTeam)
+# Account Screen
+@app.route("/account/<user>")
+def account_screen(user=None, userTeams=None):
+	# TODO: Test account information
+	# TODO: Grab league list from player object
+	# TODO: Grab which team user controls within the league (record too)
+	userTeams = [
+		{"league": "Atlantic", "team": "Buffalo Sabres", "record": "23-33"},
+		{"league": "Metropolitan", "team": "Pittsburgh Penguins", "record": "40-17"},
+		{"league": "Central", "team": "Chicago Blackhawks", "record": "24-32"},
+		{"league": "Pacific", "team": "Vegas Golden Knights", "record": "36-28"},
+	]
+	return render_template("account.html", username="TestUser", teams=userTeams)
 
-@app.route("/leagues")
-def leagues_screen(user=None):
-	return render_template("leagues.html", username=user)
+# League Screen
+@app.route("/leagues/<leagueName>")
+def leagues_screen(leagueName=None):
+	return render_template("leagues.html", username="TestUser")
 
-@app.route("/team")
-def team(user=None, team=None):
+# Team Screen
+@app.route("/team/<leagueName>/<teamName>")
+def team(leagueName=None, teamName=None):
+	# TODO: Grab team / bench from backend
 	teamList = [
 		{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "opp": "Browns", "points": 10},
 		{"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "opp": "Browns", "points": 20},
@@ -82,14 +96,18 @@ def team(user=None, team=None):
 	]
 	return render_template("team.html", username="TestUser", team=teamList, bench=benchList)
 
+# Logout Screen
 @app.route("/logout")
 def logout():
+	# TODO: Log user out and return to /home
 	return redirect(url_for("home"))
 
+# Login Screen
 @app.route('/login')
 def login():
     return render_template("login.html")
 
+# Create Account Screen
 @app.route('/create_account')
 def create_account():
     return render_template("create_account.html")

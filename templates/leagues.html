@@ -19,8 +19,10 @@
 
 {% block body %}
 	{% if username %}
-		<p>Leagues</p>
+		<h2>League Screen</h2>
 	{% else %}
 		<h2 class="fCenter">Must be logged in to view page.</h2>
 	{% endif %}
 {% endblock %}
+
+<a href={{ player.link }} target="_blank" rel="noopener noreferrer">{{ player.name }}</a>
