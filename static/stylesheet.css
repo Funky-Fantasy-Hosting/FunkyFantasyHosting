@@ -20,9 +20,9 @@ h2 {
 }
 
 table {
-	border: 2px sold black;
 	width: 80%;
 	background-color: white;
+	border-collapse: collapse;
 }
 
 td  {
@@ -38,6 +38,7 @@ th {
 
 a {
 	text-decoration: none;
+	color: black;
 }
 
 .form {
@@ -71,6 +72,22 @@ a {
   background-color: #e9f018;
 }
 
+.Pos {
+	width: 10%;
+}
+
+.Name {
+	width: 30%;
+}
+
+.Opp {
+	width: 30%;
+}
+
+.Points {
+	width: 30%;
+}
+
 .fLeft {
 	float: left;
 }
@@ -82,4 +99,11 @@ a {
 .fCenter {
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.rBorder {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
 }
