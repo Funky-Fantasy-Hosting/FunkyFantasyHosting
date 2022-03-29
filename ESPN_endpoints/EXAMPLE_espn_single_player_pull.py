@@ -4,6 +4,7 @@ import numpy as np
 # from bs4 import BeautifulSoup as BS
 import warnings
 import json
+from google.cloud import bigquery
 
 warnings.filterwarnings('ignore')
 
@@ -12,6 +13,12 @@ desired_width=320
 pd.set_option('display.width', desired_width)
 np.set_printoptions(linewidth=desired_width)
 pd.set_option('display.max_columns', 25)
+
+# initialize bigquery
+client = bigquery.Client()
+
+table_id_gamelog = "funky-fantasy-hosting-1.player_gamelogs.nfl_player_bio"
+table_id_gamelog_pivot = "funky-fantasy-hosting-1.player_gamelogs_pivot.nfl_player_bio"
 
 # example of pulling stats for Lamar Jackson from his gamelog page on ESPN
 athlete_url = 'https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/{athlete_id}/gamelog'
@@ -48,6 +55,7 @@ for athlete_id in athlete_list:
         # df_final is a df where each column is a stat, and there is event ID, and athlete id. Keeping intact, just in
         # case we prefer that in the future
 
+
         # print(data['events'])  # keyed off eventid
         # print(data['events']['401326368']['week'])  # gets me game week
         # print(data['events']['401326368']['gameDate'])  # gets actual game
@@ -67,6 +75,36 @@ for athlete_id in athlete_list:
         df_gamelog_final.to_csv('df_gamelog_final.csv')
         print(df_gamelog_final.head())
 
-
         # df_final.to_csv('df_final.csv')     # saving to csv for fun
 
+# column names can't have spaces
+df_final.columns = df_final.columns.str.replace(' ', '_')
+
+# sending to bigquery tables for gamelog each column a stat
+job = client.load_table_from_dataframe(
+    df_final, table_id_gamelog,
+)  # Make an API request.
+job.result()  # Wait for the job to complete.
+
+table = client.get_table(table_id_gamelog)  # Make an API request.
+print(
+    "Loaded {} rows and {} columns to {}".format(
+        table.num_rows, len(table.schema), table_id_gamelog
+    )
+)
+
+# column names can't have spaces
+df_gamelog_final.columns = df_gamelog_final.columns.str.replace(' ', '_')
+
+# sending to bigquery tables for gamelog each column week
+job = client.load_table_from_dataframe(
+    df_gamelog_final, table_id_gamelog_pivot,
+)  # Make an API request.
+job.result()  # Wait for the job to complete.
+
+table = client.get_table(table_id_gamelog_pivot)  # Make an API request.
+print(
+    "Loaded {} rows and {} columns to {}".format(
+        table.num_rows, len(table.schema), table_id_gamelog_pivot
+    )
+)
