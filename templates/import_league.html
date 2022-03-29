@@ -11,29 +11,33 @@
 		{% if username %}
 			<a class="fRight" href="/logout">Logout</a>
 		{% else %}
-			<a class="fRight" href="/login">Login</a>
 			<a class="fRight" href="/create_account">Create Account</a>
+			<a class="fRight" href="/login">Login</a>
 		{% endif %}
 	</div>
 {% endblock %}
 
 {% block body %}
-	<h2>Import New ESPN League</h2>
-	{% if message %}
-		<h3>{{ message }}</h3>
+	{% if username %}
+		<h2>Import New ESPN League</h2>
+		{% if message %}
+			<h3>{{ message }}</h3>
+		{% endif %}
+		<form action="" method="post">
+			<p class="form">Select League Type:</p>
+			<input type="radio" id="guillotine" name="league_type" value="guillotine">
+			<label for="guillotine" class="radio_button">Guillotine</label><br>
+			<input type="radio" id="vampire" name="league_type" value="vampire">
+			<label for="vampire" class="radio_button">Vampire</label><br>
+			<input type="radio" id="pirate" name="league_type" value="pirate">
+			<label for="pirate" class="radio_button">Pirate</label><br>
+
+			<br>
+
+			<label for="league_id" class="label_text">ESPN League ID: </label>
+			<input type="text" id="league_id" name="league_id">
+		</form>
+	{% else if %}
+		<h2 class="fCenter">Must be logged in to view page.</h2>
 	{% endif %}
-	<form action="" method="post">
-		<p class="form">Select League Type:</p>
-		<input type="radio" id="guillotine" name="league_type" value="guillotine">
-		<label for="guillotine" class="radio_button">Guillotine</label><br>
-		<input type="radio" id="vampire" name="league_type" value="vampire">
-		<label for="vampire" class="radio_button">Vampire</label><br>
-		<input type="radio" id="pirate" name="league_type" value="pirate">
-		<label for="pirate" class="radio_button">Pirate</label><br>
-
-		<br>
-
-		<label for="league_id" class="label_text">ESPN League ID: </label>
-		<input type="text" id="league_id" name="league_id">
-	</form>
 {% endblock %}

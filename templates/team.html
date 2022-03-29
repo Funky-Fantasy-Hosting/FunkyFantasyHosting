@@ -11,25 +11,41 @@
 		{% if username %}
 			<a class="fRight" href="/logout">Logout</a>
 		{% else %}
-			<a class="fRight" href="/login">Login</a>
 			<a class="fRight" href="/create_account">Create Account</a>
+			<a class="fRight" href="/login">Login</a>
 		{% endif %}
 	</div>
 {% endblock %}
 
 {% block body %}
-	<table class="fCenter">
-		<tr>
-			<th>Position</th>
-			<th>Player Name</th>
-			<th>Points</th>
-		</tr>
-		{% for player in team %}
+	{% if username %}
+		<table class="fCenter">
 			<tr>
-				<td>{{ player.position }}</td>
-				<td><a href={{ player.link }} target="_blank" rel="noopener noreferrer">{{ player.name }}</a></td>
-				<td>{{ player.points }}</td>
+				<th class="Pos">Pos</th>
+				<th class="Name">Player Name</th>
+				<th class="Opp">Opponent</th>
+				<th class="Points">Points</th>
 			</tr>
-		{% endfor %}
-	</table>
+			{% for player in team %}
+				<tr class="rBorder">
+					<td class="Pos">{{ player.position }}</td>
+					<td class="rBorder Name"><a href={{ player.link }} target="_blank" rel="noopener noreferrer">{{ player.name }}</a></td>
+					<td class="rBorder Opp">{{ player.opp }}</td>
+					<td class="Points">{{ player.points }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+		<table class="fCenter">
+			{% for player in bench %}
+				<tr class="rBorder">
+					<td class="Pos">Bench</td>
+					<td class="rBorder Name"><a href={{ player.link }} target="_blank" rel="noopener noreferrer">{{ player.name }}</a></td>
+					<td class="rBorder Opp">{{ player.opp }}</td>
+					<td class="Points">{{ player.points }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		<h2 class="fCenter">Must be logged in to view page.</h2>
+	{% endif %}
 {% endblock %}

@@ -37,57 +37,77 @@ def initdb_command():
 	db.drop_all()
 	db.create_all()
 
-# Redirect to login by default (idea from fl06_session.oy)
+# Redirect to home by default
 @app.route("/")
-def default():
-	return redirect(url_for("home"))
+def default(user=None):
+	return redirect(url_for("home", user=user))
 
+# Home Screen
 @app.route("/home")
-def home():
-	return render_template("home.html")
+def home(user=None):
+	return render_template("home.html", username=user)
 
+# New League Screen
 @app.route("/new_league/", methods=["GET", "POST"])
-def import_league(errMessage=None):
+def import_league(user=None, errMessage=None):
 	if request.method == "GET":
 		if (errMessage):
-			return render_template("import_league.html", message=errMessage)
+			return render_template("import_league.html", message=errMessage, username=user)
 		else:
-			return render_template("import_league.html")
+			return render_template("import_league.html", username=user)
 	else:
 		# Grab League information from ESPN
 		if (request.form["league_id"] == 1):
 			return render_template("import_successful.html", 
-									user="username", league_type=request.form["league_type"], league_id=request.form["league_id"])
+									username=user, league_type=request.form["league_type"], league_id=request.form["league_id"])
 		else:
-			return redirect(url_for("import_league", errMessage="Invalid ESPN League ID"))
+			return redirect(url_for("import_league", user=user, errMessage="Invalid ESPN League ID"))
 
-@app.route("/account")
-def account_screen(user=None, userTeam=None):
-	# Test account information
-	return render_template("account.html", username=user, team=userTeam)
+# Account Screen
+@app.route("/account/<user>")
+def account_screen(user=None, userTeams=None):
+	# TODO: Test account information
+	# TODO: Grab league list from player object
+	# TODO: Grab which team user controls within the league (record too)
+	userTeams = [
+		{"league": "Atlantic", "team": "Buffalo Sabres", "record": "23-33"},
+		{"league": "Metropolitan", "team": "Pittsburgh Penguins", "record": "40-17"},
+		{"league": "Central", "team": "Chicago Blackhawks", "record": "24-32"},
+		{"league": "Pacific", "team": "Vegas Golden Knights", "record": "36-28"},
+	]
+	return render_template("account.html", username="TestUser", teams=userTeams)
 
-@app.route("/leagues")
-def leagues_screen():
-	return render_template("leagues.html")
+# League Screen
+@app.route("/leagues/<leagueName>")
+def leagues_screen(leagueName=None):
+	return render_template("leagues.html", username="TestUser")
 
+# Team Screen
+@app.route("/team/<leagueName>/<teamName>")
+def team(leagueName=None, teamName=None):
+	# TODO: Grab team / bench from backend
+	teamList = [
+		{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "opp": "Browns", "points": 10},
+		{"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "opp": "Browns", "points": 20},
+		{"link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "opp": "Browns", "points": 13},
+	]
+	benchList = [
+		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5}
+	]
+	return render_template("team.html", username="TestUser", team=teamList, bench=benchList)
+
+# Logout Screen
 @app.route("/logout")
 def logout():
+	# TODO: Log user out and return to /home
 	return redirect(url_for("home"))
 
+# Login Screen
 @app.route('/login')
 def login():
     return render_template("login.html")
 
+# Create Account Screen
 @app.route('/create_account')
 def create_account():
     return render_template("create_account.html")
-
-@app.route("/team")
-def team(username=None, team=None):
-	teamList= [
-		{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "points": 10},
-		{"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "points": 20},
-		{"link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "points": 13},
-		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "points": 5}
-	]
-	return render_template("team.html", username="TestUser", team=teamList)
