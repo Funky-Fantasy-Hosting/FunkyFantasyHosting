@@ -8,8 +8,12 @@
 		<a class="fLeft" href="/account">Account</a>
 		<a class="fLeft" href="/leagues">Leagues</a>
 
-		<a class="fRight active" href="/create_account">Create Account</a>
-		<a class="fRight" href="/login">Login</a>
+		{% if username %}
+			<a class="fRight" href="/logout">Logout</a>
+		{% else %}
+			<a class="fRight active" href="/create_account">Create Account</a>
+			<a class="fRight" href="/login">Login</a>
+		{% endif %}
 	</div>
 {% endblock %}
 
@@ -18,19 +22,24 @@
 	<!-- change value of action to represent appropriate location to send form data
 	(may need modified strategy since server will need to verify and respond)-->
 	
-	<form action="/action_page.php" method="get">
+	<form action="" method="get">
 	  <label for="fname">First name:</label>
 	  <input type="text" id="fname" name="fname"><br><br>
 	  <label for="lname">Last name:</label>
 	  <input type="text" id="lname" name="lname"><br><br>
 	  <label for="username">Username:</label>
-	  <input type="text" id="username" name="username"><br><br>
+	  <input type="text" id="username" name="username" value="{{request.form.username }}"><br><br>
 	  <label for="screen name">Screen name:</label>
 	  <input type="text" id="screen name" name="screen name"><br><br>
 	  <label for="email">Email address:</label>
 	  <input type="text" id="email" name="email"><br><br>
 	  <label for="password">Password:</label>
 	  <input type="text" id="password" name="password"><br><br>
+	  <input type="submit" value="Submit">
 	</form>
 	
+	<!-- Not properly working, compare to functioning equivalent in login-->
+	{% if create_account_message %}
+		<p> {{create_account_message}}</p>
+	{% endif %}
 {% endblock %}

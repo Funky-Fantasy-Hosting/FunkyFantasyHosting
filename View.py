@@ -45,6 +45,7 @@ def default(user=None):
 # Home Screen
 @app.route("/home")
 def home(user=None):
+	successful_login = None
 	return render_template("home.html", username=user)
 
 # New League Screen
@@ -103,11 +104,29 @@ def logout():
 	return redirect(url_for("home"))
 
 # Login Screen
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+   login_message = None
+   userLog = None
+   if request.method == 'POST':
+		#TODO modify line below to query database for an existing matching username/email and password
+        if request.form['username'] != 'test' or request.form['password'] != 'test':
+            login_message = 'Incorrect Username/email or password, please try again'
+        else:
+            successful_login = 'success'
+            userLog = request.form['username']
+            return redirect(url_for("home", userLog=userLog))
+   return render_template('login.html', login_message=login_message)
 
 # Create Account Screen
-@app.route('/create_account')
+@app.route('/create_account', methods=["GET", "POST"])
 def create_account():
-    return render_template("create_account.html")
+   create_account_message = None
+   if request.method == 'POST':
+		#TODO Modify lines below to check for correct formatting of data entries
+		#And a successful addition of the user account to the DB
+        if len(request.form['username']) > 30:
+            create_account_message = 'Too many characters in username, please retry'
+        else:
+            create_account_message = 'Account successfully created'
+   return render_template('create_account.html', create_account_message=create_account_message)
