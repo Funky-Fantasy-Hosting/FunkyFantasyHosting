@@ -87,6 +87,41 @@ def team(leagueName=None, teamName=None):
 	]
 	return render_template("team.html", username="TestUser", team=teamList, bench=benchList)
 
+@app.route("/matchup/<matchupId>")
+def matchup(matchupId=None):
+	# TODO: Grab home team and away team's rosters from DB
+	homeList = [
+		{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "opp": "Browns", "points": 10},
+		{"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "opp": "Browns", "points": 20},
+		{"link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "opp": "Browns", "points": 13},
+	]
+	homeBenchList = [
+		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5}
+	]
+	awayList = [
+		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5},
+		{"link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "opp": "Browns", "points": 13},
+		{"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "opp": "Browns", "points": 20},
+	]
+	awayBenchList = [
+		{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "opp": "Browns", "points": 10},
+	]
+
+	homeTeam = {
+		"name": "Pittsburgh Penguins",
+		"roster": homeList,
+		"bench": awayBenchList,
+		"totalPoints": "43",
+	}
+	awayTeam = {
+		"name": "Washington Capitals",
+		"roster": awayList,
+		"bench": awayBenchList,
+		"totalPoints": "28",
+	}
+
+	return render_template("matchup.html", username="TestUser", awayTeam=awayTeam, homeTeam=homeTeam, week=5)
+
 @app.route("/player/<playerId>")
 def player(playerId=None):
 	# TODO: Grab player from ESPN using playerId

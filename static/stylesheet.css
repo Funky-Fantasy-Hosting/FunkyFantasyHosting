@@ -9,14 +9,30 @@ h1 {
 	font-family: "Papyrus", fantasy;
 	font-size: 4.5em;
 	padding-bottom: 5px;
-	color: #eddc21;
-	-webkit-text-stroke-width: 2px;
+	-webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
+}
+
+h1 > a {
+	color: #e9f018;
 }
 
 h2 {
 	font-size: 50px;
 	text-align: center;
+}
+
+h3 {
+	font-size: 30px;
+	text-align: center;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+h4 {
+	font-size: 25px;
+	text-align: center;
+	margin-top: 0px;
 }
 
 table {
@@ -40,6 +56,10 @@ th {
 a {
 	text-decoration: none;
 	color: black;
+}
+
+.blank {
+	color: white;
 }
 
 .form {
@@ -73,12 +93,12 @@ a {
   background-color: #e9f018;
 }
 
-.Pos, .Record {
+.Pos, .Record, .Points {
 	width: 10%;
 }
 
-.Name, .Opp, .Points {
-	width: 30%;
+.Name, .Opp {
+	width: 40%;
 }
 
 .League, .Team {
@@ -163,4 +183,31 @@ a {
 #player td {
 	font-size: 10px;
 	width: auto;
+}
+
+#awayTeam, #homeTeam {
+	margin: auto;
+	width: 90%;
+}
+
+#awayBench, #homeBench {
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+}
+
+#awayTeam th, #homeTeam th, #awayBench th, #homeBench th {
+	font-size: 30px;
+}
+
+#awayTeam .Pos, #homeTeam .Pos, #awayBench .Pos, #homeBench .Pos {
+	width: 10%;
+}
+
+#awayTeam .Name, #homeTeam .Name, #awayBench .Name, #homeBench .Name {
+	width: 80%;
+}
+
+#awayTeam .Points, #homeTeam .Points, #awayBench .Points, #homeBench .Points {
+	width: 10%;
 }
