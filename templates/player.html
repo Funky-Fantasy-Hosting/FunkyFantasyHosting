@@ -19,23 +19,23 @@
 
 {% block body %}
 	<h2>{{ player.name }}</h2>
-	<table>
+	<table id="player">
 		<tr>
 			<th>Fumbles</th>
 			<th>Targets</th>
-			<th>Receiving Yards</th>
-			<th>Receiving Touchdowns</th>
 			<th>Receptions</th>
+			<th>Yards (Rec)</th>
+			<th>Touchdowns (Rec)</th>
 			<th>Rushes</th>
-			<th>Rushing Yards</th>
-			<th>Rushing Touchdowns</th>
+			<th>Yards (Rush)</th>
+			<th>Touchdowns (Rush)</th>
 		</tr>
 		<tr>
 			<td>{{ player.fumbles }}</td>
 			<td>{{ player.receiving_targets }}</td>
+			<td>{{ player.receptions }}</td>
 			<td>{{ player.receiving_yards }}</td>
 			<td>{{ player.receiving_touchdowns }}</td>
-			<td>{{ player.receptions }}</td>
 			<td>{{ player.rushing_attempts }}</td>
 			<td>{{ player.rushing_yards }}</td>
 			<td>{{ player.rushing_touchdowns }}</td>

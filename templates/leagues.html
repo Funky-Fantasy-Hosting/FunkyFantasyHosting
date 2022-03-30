@@ -28,7 +28,7 @@
 					</tr>
 					{% for team in teams %}
 						<tr class="rBorder">
-							<td>{{ team.name }}</td>
+							<td><a href="/team/{{ leagueName }}/{{ team.name}}">{{ team.name }}</a></td>
 							<td>{{ team.wins }} - {{ team.loses }}</td>
 						</tr>
 					{% endfor %}

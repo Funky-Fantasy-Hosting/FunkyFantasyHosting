@@ -70,7 +70,7 @@ def leagues_screen(leagueName=None):
 		{"home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
 		{"home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
 	]
-	return render_template("leagues.html", username="TestUser", teams=standings, matchups=matchups, week=5)
+	return render_template("leagues.html", username="TestUser", leagueName=leagueName, teams=standings, matchups=matchups, week=5)
 
 # Team Screen
 @app.route("/team")
@@ -87,11 +87,20 @@ def team(leagueName=None, teamName=None):
 	]
 	return render_template("team.html", username="TestUser", team=teamList, bench=benchList)
 
-@app.route("/player")
 @app.route("/player/<playerId>")
 def player(playerId=None):
 	# TODO: Grab player from ESPN using playerId
-	return render_template("player.html", player="example")
+	player = {"name": "Bob Smith",
+			  "fumbles": "0",
+			  "receiving_targets": "2",
+			  "receiving_yards": "30",
+			  "receiving_touchdowns": "1",
+			  "receptions": "2",
+			  "rushing_attempts": "0",
+			  "rushing_yards": "0",
+			  "rushing_touchdowns": "0",
+			}
+	return render_template("player.html", player=player)
 
 # Logout Screen
 @app.route("/logout")
