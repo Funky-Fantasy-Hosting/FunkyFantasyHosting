@@ -9,26 +9,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///FFH.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Models #
-members = db.Table('members',
-		db.Column('league_id', db.Integer, db.ForeignKey('league.ID'), primary_key=True),
-		db.Column('user_id', db.Integer, db.ForeignKey('user.ID'), primary_key=True)
-	)
-
-class League(db.Model):
-	ID = db.Column(db.Integer, primary_key=True)
-	game_type = db.Column(db.String(20))
-	member_list = db.relationship('User', secondary=members, lazy='subquery', backref=db.backref('leagues', lazy=True))
-	commissioner = db.Column(db.String(20))
-	records = db.Column(db.String(80))
-
-class User(db.Model):
-	ID = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(20))
-	avatar = db.Column(db.Text) # store Avatar as a link to their picture
-	password = db.Column(db.String(20))
-
-# Controllers #
+# View #
 
 # Initialize Database
 @app.cli.command('initdb')
@@ -45,25 +26,22 @@ def default(user=None):
 # Home Screen
 @app.route("/home")
 def home(user=None):
-	return render_template("home.html", username=user)
+	return render_template("home.html", username="TestUser")
 
 # New League Screen
 @app.route("/new_league/", methods=["GET", "POST"])
-def import_league(user=None, errMessage=None):
+def import_league(user=None):
 	if request.method == "GET":
-		if (errMessage):
-			return render_template("import_league.html", message=errMessage, username=user)
-		else:
-			return render_template("import_league.html", username=user)
+		return render_template("import_league.html", username="TestUser")
 	else:
 		# Grab League information from ESPN
-		if (request.form["league_id"] == 1):
-			return render_template("import_successful.html", 
-									username=user, league_type=request.form["league_type"], league_id=request.form["league_id"])
+		if (request.form["league_id"] == "1"):
+			return render_template("import_successful.html", username="TestUser", league_type=request.form["league_type"], league_id=request.form["league_id"])
 		else:
-			return redirect(url_for("import_league", user=user, errMessage="Invalid ESPN League ID"))
+			return render_template("import_league.html", username="TestUser", message="Invalid EPSN League ID")
 
 # Account Screen
+@app.route("/account")
 @app.route("/account/<user>")
 def account_screen(user=None, userTeams=None):
 	# TODO: Test account information
@@ -78,11 +56,24 @@ def account_screen(user=None, userTeams=None):
 	return render_template("account.html", username="TestUser", teams=userTeams)
 
 # League Screen
+@app.route("/leagues")
 @app.route("/leagues/<leagueName>")
 def leagues_screen(leagueName=None):
-	return render_template("leagues.html", username="TestUser")
+	# TODO: Convert example lists to database calls
+	standings = [
+		{"name": "Pittsburgh Penguins", "wins": "40", "loses": "17"},
+		{"name": "Washington Capitals", "wins": "36", "loses": "28"},
+		{"name": "Philadelphia Flyers", "wins": "24", "loses": "32"},
+		{"name": "New York Rangers", "wins": "23", "loses": "33"},
+	]
+	matchups = [
+		{"home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
+		{"home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
+	]
+	return render_template("leagues.html", username="TestUser", teams=standings, matchups=matchups, week=5)
 
 # Team Screen
+@app.route("/team")
 @app.route("/team/<leagueName>/<teamName>")
 def team(leagueName=None, teamName=None):
 	# TODO: Grab team / bench from backend
@@ -95,6 +86,12 @@ def team(leagueName=None, teamName=None):
 		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5}
 	]
 	return render_template("team.html", username="TestUser", team=teamList, bench=benchList)
+
+@app.route("/player")
+@app.route("/player/<playerId>")
+def player(playerId=None):
+	# TODO: Grab player from ESPN using playerId
+	return render_template("player.html", player="example")
 
 # Logout Screen
 @app.route("/logout")
