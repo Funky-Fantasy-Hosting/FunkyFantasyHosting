@@ -8,8 +8,13 @@ SQLAlchemy==1.3.23
 Werkzeug==1.0.1
 requests==2.27.1
 pandas==1.3.5
+<<<<<<< Updated upstream
 espn_api=0.19.2
 google-cloud-datastore
+=======
+espn_api==0.19.2
+pipgoogle-cloud-datastore
+>>>>>>> Stashed changes
 google-cloud-storage
 py-bcrypt
 datetime
