@@ -19,10 +19,35 @@
 
 {% block body %}
 	{% if username %}
-		<h2>League Screen</h2>
+		<div class="container">
+			<div>
+				<table class="fCenter" id="standings">
+					<tr>
+						<th>Team Name</th>
+						<th>Record</th>
+					</tr>
+					{% for team in teams %}
+						<tr class="rBorder">
+							<td>{{ team.name }}</td>
+							<td>{{ team.wins }} - {{ team.loses }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+			<div>
+				<h2 id="match_header">Week {{ week }} Matchups</h2>
+				<table id="matchups" class="fCenter">
+					{% for match in matchups %}
+						<tr class="rBorder">
+							<td class="match_name">{{ match.away }}</td>
+							<td class="match_points">{{ match.away_points }} - {{ match.home_points }}</td>
+							<td class="match_name">{{ match.home }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
 	{% else %}
 		<h2 class="fCenter">Must be logged in to view page.</h2>
 	{% endif %}
 {% endblock %}
-
-<a href={{ player.link }} target="_blank" rel="noopener noreferrer">{{ player.name }}</a>

@@ -11,11 +11,11 @@ h1 {
 	padding-bottom: 5px;
 	color: #eddc21;
 	-webkit-text-stroke-width: 2px;
-  	-webkit-text-stroke-color: black;
+  -webkit-text-stroke-color: black;
 }
 
 h2 {
-	font-size: 2em;
+	font-size: 50px;
 	text-align: center;
 }
 
@@ -52,7 +52,7 @@ a {
 
 .topnav {
   overflow: hidden;
-  background-color: #1729e8;
+  background-color: #5f9ea0;
   font-size: 1.5em;
   padding: 10px;
 }
@@ -103,4 +103,49 @@ a {
 	border-bottom: 1px solid black;
   border-left: 1px solid black;
   border-right: 1px solid black;
+}
+
+.submit {
+	margin-top: 1vh;
+}
+
+.container {
+	display: flex;
+}
+
+.container > div {
+	width: 50%;
+}
+
+#standings {
+	margin-top: 0px;
+}
+
+#standings th {
+	font-size: 50px;
+}
+
+#standings td {
+	font-size: 30px;
+	padding-top: 5px;
+}
+
+#matchups td {
+	width: 20%;
+	white-space: nowrap;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.match_name {
+	width: 45%;
+}
+
+.match_points {
+	width: 10%;
+}
+
+#match_header {
+	margin-top: 0px;
+	margin-bottom: 10px;
 }
