@@ -49,7 +49,7 @@ def home(user=None):
 
 # New League Screen
 @app.route("/new_league/", methods=["GET", "POST"])
-def import_league(user="None", errMessage=None):
+def import_league(user=None, errMessage=None):
 	if request.method == "GET":
 		if (errMessage):
 			return render_template("import_league.html", message=errMessage, username=user)
