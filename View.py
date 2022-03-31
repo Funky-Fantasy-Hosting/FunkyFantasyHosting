@@ -2,6 +2,7 @@
 from flask import Flask, request, abort, url_for, redirect, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
+from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
 # init #
 app = Flask(__name__)
@@ -20,8 +21,8 @@ def initdb_command():
 
 # Redirect to home by default
 @app.route("/")
-def default(user=None):
-	return redirect(url_for("home", user=user))
+def default():
+	return redirect(url_for("home"))
 
 # Home Screen
 @app.route("/home")
@@ -35,10 +36,8 @@ def import_league(user=None):
 		return render_template("import_league.html", username="TestUser")
 	else:
 		# Grab League information from ESPN
-		if (request.form["league_id"] == "1"):
-			return render_template("import_successful.html", username="TestUser", league_type=request.form["league_type"], league_id=request.form["league_id"])
-		else:
-			return render_template("import_league.html", username="TestUser", message="Invalid EPSN League ID")
+		df_league_table = pull_new_league(request.form["league_id"], 2) 	# example of new league
+		return render_template("import_successful.html", username="TestUser", league_type=request.form["league_type"], league_id=request.form["league_id"])
 
 # Account Screen
 @app.route("/account")
