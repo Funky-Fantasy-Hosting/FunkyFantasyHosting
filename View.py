@@ -1,36 +1,15 @@
 # Setup of importing/init comes from fl10_model.py
 from flask import Flask, request, abort, url_for, redirect, session, render_template
 from flask_sqlalchemy import SQLAlchemy
-
-
-# init # Thank you IDE power
 from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
+# init
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///FFH.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Models #
-members = db.Table('members',
-		db.Column('league_id', db.Integer, db.ForeignKey('league.ID'), primary_key=True),
-		db.Column('user_id', db.Integer, db.ForeignKey('user.ID'), primary_key=True)
-	)
-
-class League(db.Model):
-	ID = db.Column(db.Integer, primary_key=True)
-	game_type = db.Column(db.String(20))
-	member_list = db.relationship('User', secondary=members, lazy='subquery', backref=db.backref('leagues', lazy=True))
-	commissioner = db.Column(db.String(20))
-	records = db.Column(db.String(80))
-
-class User(db.Model):
-	ID = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(20))
-	avatar = db.Column(db.Text) # store Avatar as a link to their picture
-	password = db.Column(db.String(20))
-
-# Controllers #
+# View #
 
 # Initialize Database
 @app.cli.command('initdb')

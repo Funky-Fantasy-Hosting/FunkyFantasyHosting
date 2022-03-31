@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- Layout styled off of flaskr and fl08_adv_templates examples -->
 <html>
 <head>
 	<title>{% block title %}CPS43 Catering{% endblock %}</title>
@@ -8,14 +7,19 @@
 <body>
 	{% block navbar %}
 		<div class="topnav">
-			<a class="fLeft active" href="/home">Home</a>
-			<a class="fLeft" href="/account">Account</a>
-			<a class="fLeft" href="/leagues">Leagues</a>
+		<a class="fLeft active" href="/home">Home</a>
+		<a class="fLeft" href="/account">Account</a>
+		<a class="fLeft" href="/leagues">Leagues</a>
 
+		{% if username %}
 			<a class="fRight" href="/logout">Logout</a>
+		{% else %}
+			<a class="fRight" href="/create_account">Create Account</a>
+			<a class="fRight" href="/login">Login</a>
+		{% endif %}
 		</div>
 	{% endblock %}
-	<h1>Funky Fantasy Hosting</h1>
+	<h1><a href="/home">Funky Fantasy Hosting</a></h1>
 	{% block body %}
 	{% endblock %}
 </body>

@@ -6,23 +6,40 @@ body {
 h1 {
 	margin-top: 0;
 	text-align: center;
-	background-color: white;
-	font-size: 4em;
+	font-family: "Papyrus", fantasy;
+	font-size: 4.5em;
 	padding-bottom: 5px;
-	color: #eddc21;
-	-webkit-text-stroke-width: 2px;
-  	-webkit-text-stroke-color: black;
+	-webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
+h1 > a {
+	color: #e9f018;
 }
 
 h2 {
-	font-size: 2em;
+	font-size: 50px;
 	text-align: center;
 }
 
+h3 {
+	font-size: 30px;
+	text-align: center;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+h4 {
+	font-size: 25px;
+	text-align: center;
+	margin-top: 0px;
+}
+
 table {
-	border: 2px sold black;
 	width: 80%;
 	background-color: white;
+	border-collapse: collapse;
+	margin-bottom: 30px;
 }
 
 td  {
@@ -36,6 +53,15 @@ th {
 	font-size: 40px;
 }
 
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.blank {
+	color: white;
+}
+
 .form {
 	font-size: 1.5em;
 }
@@ -46,7 +72,7 @@ th {
 
 .topnav {
   overflow: hidden;
-  background-color: #1729e8;
+  background-color: #5f9ea0;
   font-size: 1.5em;
   padding: 10px;
 }
@@ -60,10 +86,23 @@ th {
 
 .topnav a:hover, .topnav b:hover {
   background-color: #2d63ed;
+  cursor: pointer;
 }
 
 .topnav a.active {
   background-color: #e9f018;
+}
+
+.Pos, .Record, .Points {
+	width: 10%;
+}
+
+.Name, .Opp {
+	width: 40%;
+}
+
+.League, .Team {
+	width: 45%;
 }
 
 .fLeft {
@@ -77,4 +116,98 @@ th {
 .fCenter {
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.rBorder {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.submit {
+	margin-top: 1vh;
+}
+
+.container {
+	display: flex;
+}
+
+.container > div {
+	width: 50%;
+}
+
+#standings {
+	margin-top: 0px;
+}
+
+#standings th {
+	font-size: 50px;
+}
+
+#standings td {
+	font-size: 30px;
+	padding-top: 5px;
+}
+
+#matchups td {
+	width: 20%;
+	white-space: nowrap;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.match_name {
+	width: 45%;
+}
+
+.match_points {
+	width: 10%;
+}
+
+#match_header {
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+
+#player {
+	margin: auto;
+}
+
+#player th {
+	font-size: 30px;
+	white-space: nowrap;
+	padding: 10px;
+}
+
+#player td {
+	font-size: 10px;
+	width: auto;
+}
+
+#awayTeam, #homeTeam {
+	margin: auto;
+	width: 90%;
+}
+
+#awayBench, #homeBench {
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+}
+
+#awayTeam th, #homeTeam th, #awayBench th, #homeBench th {
+	font-size: 30px;
+}
+
+#awayTeam .Pos, #homeTeam .Pos, #awayBench .Pos, #homeBench .Pos {
+	width: 10%;
+}
+
+#awayTeam .Name, #homeTeam .Name, #awayBench .Name, #homeBench .Name {
+	width: 80%;
+}
+
+#awayTeam .Points, #homeTeam .Points, #awayBench .Points, #homeBench .Points {
+	width: 10%;
 }
