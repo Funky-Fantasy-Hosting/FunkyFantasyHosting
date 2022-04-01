@@ -8,21 +8,24 @@
 		<a class="fLeft" href="/account">Account</a>
 		<a class="fLeft" href="/leagues">Leagues</a>
 
-		<a class="fRight" href="/create_account">Create Account</a>
-		<a class="fRight active" href="/login">Login</a>
+		{% if session["username"] %}
+			<a class="fRight" href="/logout">Logout</a>
+		{% else %}
+			<a class="fRight" href="/create_account">Create Account</a>
+			<a class="fRight active" href="/login">Login</a>
+		{% endif %}
 	</div>
 {% endblock %}
 
 {% block body %}
-	<p>Enter your login information below</p>
-	<!-- change value of action to represent appropriate location to send form data
-	(may need modified strategy since server will need to verify and respond)-->
+	<h4>{% block h4 %}Enter your login credentials below to access your Funky Fantasy Hosting account {% endblock %}</h4>
+	<br>
 	
-	<form action="/action_page.php" method="get">
+	<form action="" method="post">
 	  <label for="username/email">Username or Email Adress:</label>
-	  <input type="text" id="username/email" name="username/email"><br><br>
+	  <input type="text" id="username/email" name="username" value="{{request.form.username }}"><br><br>
 	  <label for="password">Password:</label>
-	  <input type="text" id="password" name="password"><br><br>
+	  <input type="text" id="password" name="password" value="{{request.form.password }}"><br><br>
 	  <input type="submit" value="Submit">
 	</form>
 {% endblock %}

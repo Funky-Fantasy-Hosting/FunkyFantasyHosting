@@ -11,7 +11,7 @@
 		<a class="fLeft" href="/account">Account</a>
 		<a class="fLeft" href="/leagues">Leagues</a>
 
-		{% if username %}
+		{% if session["username"] %}
 			<a class="fRight" href="/logout">Logout</a>
 		{% else %}
 			<a class="fRight" href="/create_account">Create Account</a>
