@@ -2,7 +2,7 @@
 from flask import Flask, request, abort, url_for, redirect, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
-from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
+# from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
 # init #
 app = Flask(__name__)
