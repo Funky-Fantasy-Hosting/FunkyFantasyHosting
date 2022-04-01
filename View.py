@@ -36,7 +36,7 @@ def import_league(user=None):
 		return render_template("import_league.html", username="TestUser")
 	else:
 		# Grab League information from ESPN
-		df_league_table = pull_new_league(request.form["league_id"], 2) 	# example of new league
+		# df_league_table = pull_new_league(request.form["league_id"], 2) 	# example of new league
 		return render_template("import_successful.html", username="TestUser", league_type=request.form["league_type"], league_id=request.form["league_id"])
 
 # Account Screen
