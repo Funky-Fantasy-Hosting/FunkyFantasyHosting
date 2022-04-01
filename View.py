@@ -26,24 +26,23 @@ def default():
 
 # Home Screen
 @app.route("/home")
-def home(user=None):
-  return render_template("home.html", username="TestUser")
+def home():
+  return render_template("home.html")
 
 
 # New League Screen
 @app.route("/new_league/", methods=["GET", "POST"])
-def import_league(user=None):
+def import_league():
 	if request.method == "GET":
-		return render_template("import_league.html", username="TestUser")
+		return render_template("import_league.html")
 	else:
 		# Grab League information from ESPN
 		# df_league_table = pull_new_league(request.form["league_id"], 2) 	# example of new league
-		return render_template("import_successful.html", username="TestUser", league_type=request.form["league_type"], league_id=request.form["league_id"])
+		return render_template("import_successful.html", league_type=request.form["league_type"], league_id=request.form["league_id"])
 
 # Account Screen
 @app.route("/account")
-@app.route("/account/<user>")
-def account_screen(user=None, userTeams=None):
+def account_screen():
 	# TODO: Test account information
 	# TODO: Grab league list from player object
 	# TODO: Grab which team user controls within the league (record too)
@@ -53,7 +52,7 @@ def account_screen(user=None, userTeams=None):
 		{"league": "Central", "team": "Chicago Blackhawks", "record": "24-32"},
 		{"league": "Pacific", "team": "Vegas Golden Knights", "record": "36-28"},
 	]
-	return render_template("account.html", username="TestUser", teams=userTeams)
+	return render_template("account.html", teams=userTeams)
 
 # League Screen
 @app.route("/leagues")
@@ -70,7 +69,7 @@ def leagues_screen(leagueName=None):
 		{"home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
 		{"home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
 	]
-	return render_template("leagues.html", username="TestUser", leagueName=leagueName, teams=standings, matchups=matchups, week=5)
+	return render_template("leagues.html", leagueName=leagueName, teams=standings, matchups=matchups, week=5)
 
 # Team Screen
 @app.route("/team")
@@ -85,7 +84,7 @@ def team(leagueName=None, teamName=None):
 	benchList = [
 		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5}
 	]
-	return render_template("team.html", username="TestUser", team=teamList, bench=benchList)
+	return render_template("team.html", team=teamList, bench=benchList)
 
 @app.route("/matchup/<matchupId>")
 def matchup(matchupId=None):
@@ -120,7 +119,7 @@ def matchup(matchupId=None):
 		"totalPoints": "28",
 	}
 
-	return render_template("matchup.html", username="TestUser", awayTeam=awayTeam, homeTeam=homeTeam, week=5)
+	return render_template("matchup.html", awayTeam=awayTeam, homeTeam=homeTeam, week=5)
 
 @app.route("/player/<playerId>")
 def player(playerId=None):
@@ -150,7 +149,7 @@ def logout():
 @app.route('/login', methods=["GET", "POST"])
 def login_screen():
 	if "username" in session:
-		return redirect(url_for("account_screen", user=session["username"]))
+		return redirect(url_for("account_screen"))
 	elif request.method == "POST":
 		#modify calls below to call method to query database and check for valid login
 		#for now passes as a succesful login if username and password are both "test"
@@ -160,7 +159,7 @@ def login_screen():
 			return render_template("invalid_login.html")
 		else:
 			session["username"] = request.form["username"]
-			return redirect(url_for("account_screen", user=session["username"]))
+			return redirect(url_for("account_screen"))
 	else:
 		return render_template("login.html")
 
@@ -168,7 +167,7 @@ def login_screen():
 @app.route('/create_account', methods=["GET", "POST"])
 def create_account():
 	if "username" in session:
-		return redirect(url_for("account_screen", user=session["username"]))
+		return redirect(url_for("account_screen"))
 	elif request.method == "POST":
 		#modify calls below to call methods which register user account in DB
 		#Methods will need to check if inputs are valid ie: password long enough length, username not taken

@@ -18,9 +18,9 @@
 {% endblock %}
 
 {% block body %}
-	{% if username %}
+	{% if session["username"] %}
 		<!-- There is a user logged in. -->
-		<h2>Welcome, {{ username }}</h2>
+		<h2>Welcome, {{ session["username"] }}</h2>
 		<table class="fCenter">
 			<tr>
 				<th class="League">League</th>
