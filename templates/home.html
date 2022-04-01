@@ -8,7 +8,7 @@
 		<a class="fLeft" href="/account">Account</a>
 		<a class="fLeft" href="/leagues">Leagues</a>
 
-		{% if username %}
+		{% if session["username"] %}
 			<a class="fRight" href="/logout">Logout</a>
 		{% else %}
 			<a class="fRight" href="/create_account">Create Account</a>
@@ -18,17 +18,11 @@
 {% endblock %}
 
 {% block body %}
-	{% if successful_login %}
-	<!-- TODO Successfully modify and pass variables to
-	include home page functionality of welcoming user after sign include
-	and having a default message prior to sign in-->
-		<p> Welcome back {{userLog}} </p>
+	{% if session["username"] %}
+		<h3> Welcome back {{ session["username"] }}! We hope you continue to enjoy Funky Fantasy Hosting!</h3>
 	{% else %}
-		<p> Welcome to Funky Fantasy Hosting! If you already have an account
-		click on Login in the top right of your screen. If you are a new member
-		and are looking for an alternate site to host guillitine, vampire, or 
-		pirate fantasy football leagues, you've come to the right place. Click on 
-		create account in the top right of your screen to begin your journey now!</p>
+		<h3> Welcome to Funky Fantasy Hosting! </h3>
+		<p>If you are new here click the create account option to get started! </p>
+		<p>If you are a returning member, welcome back! Please click log in to enter your account </p>
 	{% endif %}
-
 {% endblock %}

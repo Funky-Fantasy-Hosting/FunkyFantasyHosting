@@ -140,26 +140,52 @@ def player(playerId=None):
 # Logout Screen
 @app.route("/logout")
 def logout():
-	# TODO: Log user out and return to /home
-	return redirect(url_for("home"))
+	if "username" in session:
+		session.clear()
+		return redirect(url_for("home"))
+	else:
+		return redirect(url_for("home"))
 
 # Login Screen
 @app.route('/login', methods=["GET", "POST"])
-def login():
-   login_message = None
-   userLog = None
-   if request.method == 'POST':
-		#TODO modify line below to query database for an existing matching username/email and password
-        if request.form['username'] != 'test' or request.form['password'] != 'test':
-            login_message = 'Incorrect Username/email or password, please try again'
-        else:
-            successful_login = 'success'
-            userLog = request.form['username']
-            return redirect(url_for("home", userLog=userLog))
-   return render_template('login.html', login_message=login_message)
+def login_screen():
+	if "username" in session:
+		return redirect(url_for("account_screen", user=session["username"]))
+	elif request.method == "POST":
+		#modify calls below to call method to query database and check for valid login
+		#for now passes as a succesful login if username and password are both "test"
+		username = request.form['username']
+		password = request.form['password']
+		if username != 'test' or password != 'test':
+			return render_template("invalid_login.html")
+		else:
+			session["username"] = request.form["username"]
+			return redirect(url_for("account_screen", user=session["username"]))
+	else:
+		return render_template("login.html")
 
 # Create Account Screen
 @app.route('/create_account', methods=["GET", "POST"])
 def create_account():
-    return render_template("create_account.html")
+	if "username" in session:
+		return redirect(url_for("account_screen", user=session["username"]))
+	elif request.method == "POST":
+		#modify calls below to call methods which register user account in DB
+		#Methods will need to check if inputs are valid ie: password long enough length, username not taken
+		#for now as long as username is test, account creation will be successful 
+		fname = request.form['fname']
+		lname = request.form['lname']
+		username = request.form['username']
+		screenName = request.form['screen name']
+		emial = request.form['email']
+		password = request.form['password']
+		if username != 'test':
+			return render_template("invalid_create_account.html")
+		else:
+			return redirect(url_for("login_screen"))
+	else:
+		return render_template("create_account.html")
 
+
+# Secrect key for sessions
+app.secret_key = "!s3cr3t k3y!"
