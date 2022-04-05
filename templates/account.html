@@ -6,7 +6,7 @@
 	<div class="topnav">
 		<a class="fLeft" href="/home">Home</a>
 		<a class="fLeft active" href="/account">Account</a>
-		<a class="fLeft" href="/leagues">Leagues</a>
+		<a class="fLeft" href="/league">League</a>
 
 		{% if session["username"] %}
 			<a class="fRight" href="/logout">Logout</a>
@@ -18,9 +18,16 @@
 {% endblock %}
 
 {% block body %}
-	{% if username %}
+	{% if session["username"] %}
 		<!-- There is a user logged in. -->
-		<h2>Welcome, {{ username }}</h2>
+		<h2>Welcome, {{ session["username"] }}</h2>
+		<h4>{% block h4 %} Please type an option below to select or change your active league{% endblock %}</h4>
+		<!-- TODO modify below form and league selection process to coorespond to links in tables, if possible-->
+		<form action="" method="post">
+		  <label for="leagueID">Active League Name:</label>
+		  <input type="text" id="leagueID" name="leagueID" value="{{request.form.leagueID }}"><br><br>
+		  <input type="submit" value="Submit">
+		</form>
 		<table class="fCenter">
 			<tr>
 				<th class="League">League</th>
@@ -29,7 +36,7 @@
 			</tr>
 			{% for team in teams %}
 				<tr class="rBorder">
-					<td class="League"><a href="/leagues/{{ team.league }}">{{ team.league }}</a></td>
+					<td class="League"><a href="/league/{{ team.league }}">{{ team.league }}</a></td>
 					<td class="Team rBorder"><a href="/team/{{ team.league }}/{{ team.team }}">{{ team.team }}</a></td>
 					<td class="Record"><a href="/team/{{ team.team }}/{{ team.team }}">{{ team.record }}</a></td>
 				</tr>
