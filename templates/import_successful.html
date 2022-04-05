@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block body %}
-	{% if username %}
+	{% if session["username"] %}
 		<h2>Import New ESPN League</h2>
 		<h3>League imported successfully.</h3>
 		<p>League Type: {{league_type}}</p>

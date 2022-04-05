@@ -32,13 +32,13 @@ def home():
 
 # New League Screen
 @app.route("/new_league/", methods=["GET", "POST"])
-def import_league(user=None):
+def import_league():
 	if request.method == "GET":
-		return render_template("import_league.html", username="TestUser")
+		return render_template("import_league.html")
 	else:
 		# Grab League information from ESPN
-		df_league_table = pull_new_league(request.form["league_id"], 2) 	# example of new league
-		return render_template("import_successful.html", username="TestUser", league_type=request.form["league_type"], league_id=request.form["league_id"])
+		# df_league_table = pull_new_league(request.form["league_id"], 2) 	# example of new league
+		return render_template("import_successful.html", league_type=request.form["league_type"], league_id=request.form["league_id"])
 
 # Account Screen
 @app.route("/account", methods=["GET", "POST"])
@@ -67,7 +67,6 @@ def account_screen(userTeams=None):
 	else: 
 		return render_template("account.html")
 
-
 # League Screen
 @app.route("/league")
 @app.route("/league/<leagueName>")
@@ -82,8 +81,8 @@ def leagues_screen(leagueName=None):
 			{"name": "New York Rangers", "wins": "23", "loses": "33"},
 		]
 		matchups = [
-			{"home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
-			{"home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
+			{"matchId": "1", "home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
+			{"matchId": "2", "home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
 		]
 		return render_template("league.html", teams=standings, matchups=matchups, week=5)
 	else:
@@ -102,7 +101,7 @@ def team(leagueName=None, teamName=None):
 	benchList = [
 		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5}
 	]
-	return render_template("team.html", username="TestUser", team=teamList, bench=benchList)
+	return render_template("team.html", team=teamList, bench=benchList)
 
 @app.route("/matchup/<matchupId>")
 def matchup(matchupId=None):
@@ -167,7 +166,7 @@ def logout():
 @app.route('/login', methods=["GET", "POST"])
 def login_screen():
 	if "username" in session:
-		return redirect(url_for("account_screen", user=session["username"]))
+		return redirect(url_for("account_screen"))
 	elif request.method == "POST":
 		#modify calls below to call method to query database and check for valid login
 		#for now passes as a succesful login if username and password are both "test"
@@ -185,7 +184,7 @@ def login_screen():
 @app.route('/create_account', methods=["GET", "POST"])
 def create_account():
 	if "username" in session:
-		return redirect(url_for("account_screen", user=session["username"]))
+		return redirect(url_for("account_screen"))
 	elif request.method == "POST":
 		#modify calls below to call methods which register user account in DB
 		#Methods will need to check if inputs are valid ie: password long enough length, username not taken

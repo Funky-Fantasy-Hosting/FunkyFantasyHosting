@@ -39,9 +39,9 @@
 				<table id="matchups" class="fCenter">
 					{% for match in matchups %}
 						<tr class="rBorder">
-							<td class="match_name">{{ match.away }}</td>
-							<td class="match_points">{{ match.away_points }} - {{ match.home_points }}</td>
-							<td class="match_name">{{ match.home }}</td>
+							<td class="match_name"><a href="/matchup/{{ match.matchId }}">{{ match.away }}</a></td>
+							<td class="match_points"><a href="/matchup/{{ match.matchId }}">{{ match.away_points }} - {{ match.home_points }}</a></td>
+							<td class="match_name"><a href="/matchup/{{ match.matchId }}">{{ match.home }}</a></td>
 						</tr>
 					{% endfor %}
 				</table>
