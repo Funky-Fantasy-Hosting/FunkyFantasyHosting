@@ -2,7 +2,7 @@
 from flask import Flask, request, abort, url_for, redirect, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
-from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
+# from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
 # init #
 app = Flask(__name__)
@@ -41,35 +41,52 @@ def import_league():
 		return render_template("import_successful.html", league_type=request.form["league_type"], league_id=request.form["league_id"])
 
 # Account Screen
-@app.route("/account")
-def account_screen():
-	# TODO: Test account information
-	# TODO: Grab league list from player object
-	# TODO: Grab which team user controls within the league (record too)
-	userTeams = [
-		{"league": "Atlantic", "team": "Buffalo Sabres", "record": "23-33"},
-		{"league": "Metropolitan", "team": "Pittsburgh Penguins", "record": "40-17"},
-		{"league": "Central", "team": "Chicago Blackhawks", "record": "24-32"},
-		{"league": "Pacific", "team": "Vegas Golden Knights", "record": "36-28"},
-	]
-	return render_template("account.html", teams=userTeams)
+@app.route("/account", methods=["GET", "POST"])
+def account_screen(userTeams=None):
+	if "username" in session:
+		#TODO Call method to populate a table representing list of leagues a user belongs to
+		#For now displays a hyptothetical list of leagues made by Connor
+		userTeams = [
+			{"league": "Atlantic", "team": "Buffalo Sabres", "record": "23-33"},
+			{"league": "Metropolitan", "team": "Pittsburgh Penguins", "record": "40-17"},
+			{"league": "Central", "team": "Chicago Blackhawks", "record": "24-32"},
+			{"league": "Pacific", "team": "Vegas Golden Knights", "record": "36-28"},
+		]
+		if request.method == "POST":
+			#TODO modeify the way changing an active league is done by the user, will require cooresponding changes to account.html
+			#For now user is asked to type in the league they wish to make active. Any of the names listed in the hypothetitcal 
+			#table of leagues will add a leagueID session variable, thus giving access to the league screen
+			leagueID = request.form['leagueID'] 
+			if leagueID == "Atlantic" or leagueID == "Metropolitan" or leagueID == "Central" or leagueID == "Pacific":
+				session["leagueID"] = request.form['leagueID']
+				return render_template("account.html", teams=userTeams)
+			else:
+				return render_template("account.html", teams=userTeams)
+		else:
+			return render_template("account.html", teams=userTeams)
+	else: 
+		return render_template("account.html")
 
 # League Screen
-@app.route("/leagues")
-@app.route("/leagues/<leagueName>")
+@app.route("/league")
+@app.route("/league/<leagueName>")
 def leagues_screen(leagueName=None):
-	# TODO: Convert example lists to database calls
-	standings = [
-		{"name": "Pittsburgh Penguins", "wins": "40", "loses": "17"},
-		{"name": "Washington Capitals", "wins": "36", "loses": "28"},
-		{"name": "Philadelphia Flyers", "wins": "24", "loses": "32"},
-		{"name": "New York Rangers", "wins": "23", "loses": "33"},
-	]
-	matchups = [
-		{"home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
-		{"home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
-	]
-	return render_template("leagues.html", leagueName=leagueName, teams=standings, matchups=matchups, week=5)
+	if "leagueID" in session:
+		# TODO Call function to load in standings cooresponding table data for league, for now loads sample data made by connor
+		# TODO: Convert example lists to database calls
+		standings = [
+			{"name": "Pittsburgh Penguins", "wins": "40", "loses": "17"},
+			{"name": "Washington Capitals", "wins": "36", "loses": "28"},
+			{"name": "Philadelphia Flyers", "wins": "24", "loses": "32"},
+			{"name": "New York Rangers", "wins": "23", "loses": "33"},
+		]
+		matchups = [
+			{"home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
+			{"home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
+		]
+		return render_template("league.html", teams=standings, matchups=matchups, week=5)
+	else:
+		return redirect(url_for("account_screen"))
 
 # Team Screen
 @app.route("/team")
