@@ -81,8 +81,8 @@ def leagues_screen(leagueName=None):
 			{"name": "New York Rangers", "wins": "23", "loses": "33"},
 		]
 		matchups = [
-			{"home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
-			{"home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
+			{"matchId": "1", "home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
+			{"matchId": "2", "home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
 		]
 		return render_template("league.html", teams=standings, matchups=matchups, week=5)
 	else:
