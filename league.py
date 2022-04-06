@@ -1,4 +1,4 @@
-import team, user, player, matchup, playoffs
+import team, user, player, matchup, playoffs, bigquery_fun
 
 class League:
 
@@ -13,20 +13,30 @@ class League:
 
 
 
-
-    def __init__(self, id: int, name: str, type: int, teamList: 'list[team.Team]', rosterMax: int, commish: user.User, playerList: 'list[player.Player]', matchupList: 'list[matchup.Matchup]', size: int, waiverType: int, FAABBudget: int, waiverDropPeriod: int,):
+#Initializer should get the league id and then get all the other data from the database
+    def __init__(self, id):
         self.id = id
-        self.name = name
-        self.type = type
-        self.teamList = teamList
+
+        lg_df = bigquery_fun.get_league_df(id) #The league dataframe
+        tm_df = bigquery_fun.get_team_df(id) #The team dataframe
+        pl_df = bigquery_fun.get_player_df(id) #The player dataframe
+        commish_df = lg_df.loc[lg_df['league_commish'] == 1]
+
+        self.name = "Placeholder"
+        self.type = lg_df.iloc[0]['league_type']
+        self.teamList = []
+        #populate the team list
+        for x in range(len(tm_df.index)):
+            self.teamList.append(team.Team(tm_df.iloc[x]))
+
         self.rosterMax = rosterMax
-        self.commish = commish
+        self.commish = commish_df.iloc[0]['user_ids']
         self.playerList = playerList
         self.rosterSettings = None
         self.scoringSettings = None
         self.memberSettings = None
         self.matchupList = matchupList
-        self.size = size
+        self.size = lg_df.iloc[0]['league_size']
         self.waiverType = waiverType
         self.FAABBudget = FAABBudget
         self.waiverDropPeriod = None

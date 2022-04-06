@@ -5,12 +5,12 @@ playerListType = 'list[player.Player]'
 
 
 class Team:
-    def __init__(self, id: int, name: str, playerList: playerListType, owner: int, FAABBudget: int):
-        self.id = id
-        self.name = name
-        self.playerList = playerList
+    def __init__(self, team_df):
+        self.id = team_df.iloc[0]['team_id']
+        self.name = team_df.iloc[0]['team_name']
+        self.playerList = team_df.iloc[0]['lineup']
         self.startingLineup = None
-        self.owner = owner #The ID of the user that owns this team.
+        self.owner = team_df.iloc[0]['user_id'] #The ID of the user that owns this team.
         self.nextMatchup = None
         self.status = None
         self.FAABBudget = FAABBudget
