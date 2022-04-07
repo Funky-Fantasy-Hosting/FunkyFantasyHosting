@@ -3,6 +3,7 @@
 <head>
 	<title>{% block title %}CPS43 Catering{% endblock %}</title>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}" />
+	{% block head %}{% endblock %}
 </head>
 <body>
 	{% block navbar %}
