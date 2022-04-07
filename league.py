@@ -1,4 +1,4 @@
-import team, user, player, matchup, playoffs
+from FunkyFantasyHosting import team, user, player, matchup, playoffs, bigquery_fun
 
 class League:
 
@@ -13,22 +13,35 @@ class League:
 
 
 
-
-    def __init__(self, id: int, name: str, type: int, teamList: 'list[team.Team]', rosterMax: int, commish: user.User, playerList: 'list[player.Player]', matchupList: 'list[matchup.Matchup]', size: int, waiverType: int, FAABBudget: int, waiverDropPeriod: int,):
+#Initializer should get the league id and then get all the other data from the database
+    def __init__(self, id):
         self.id = id
-        self.name = name
-        self.type = type
-        self.teamList = teamList
-        self.rosterMax = rosterMax
-        self.commish = commish
-        self.playerList = playerList
+
+        lg_df = bigquery_fun.get_league_df(id) #The league dataframe
+        tm_df = bigquery_fun.get_team_df(id) #The team dataframe
+        #pl_df = bigquery_fun.get_player_df(id) #The player dataframe
+        commish_df = lg_df.loc[lg_df['league_commish'] == 1]
+
+        self.name = "Placeholder"
+        self.type = lg_df.iloc[0]['league_type']
+        self.teamList = []
+        #populate the team list
+        for x in range(len(tm_df.index)):
+            teamToAdd = team.Team(tm_df.iloc[x])
+            self.teamList.append(teamToAdd)
+
+        self.rosterMax = 10
+        self.commish = commish_df.iloc[0]['user_ids']
+        #populate the player list
+        self.playerList = None
         self.rosterSettings = None
         self.scoringSettings = None
         self.memberSettings = None
-        self.matchupList = matchupList
-        self.size = size
-        self.waiverType = waiverType
-        self.FAABBudget = FAABBudget
+        #populate the matchup list
+        self.matchupList = None
+        self.size = lg_df.iloc[0]['league_size']
+        self.waiverType = None
+        self.FAABBudget = None
         self.waiverDropPeriod = None
         self.tradeTimeline = None
         self.tradeDeadline = None
@@ -45,8 +58,11 @@ class League:
     def __repr__(self):
         return None
 
-    def get_id():
-        return id
+    def get_id(self):
+        return self.id
+
+    def get_teams(self):
+        return self.teamList
 
     #No checking is happening, we need to check to make sure that all the steps that happen in this function actually happen
     #If dropping player 2 fails somehow, we have to be able to undo or not do the dropping of player 1
