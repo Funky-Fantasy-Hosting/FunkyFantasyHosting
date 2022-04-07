@@ -9,14 +9,16 @@ dataset_id = "funky-fantasy-hosting-1.ff_league_table"
 
 #Uncomment block below and run this file to test sql query stuff
 #-------------------------------------------------------------
-# sql = """
-#     SELECT *
-#     FROM `funky-fantasy-hosting-1.ff_team_table.league_721301807`
-# """
+sql = """
+    SELECT *
+    FROM `funky-fantasy-hosting-1.ff_team_table.league_721301807`
+"""
 
-# df = client.query(sql).to_dataframe()
-# for x in range(len(df.index)):
-#     print(df.iloc[x])
+df = client.query(sql).to_dataframe()
+for x in range(len(df.index)):
+    #print(df.iloc[x])
+    y = df.iloc[x]
+    print (y.loc['team_name'])
 # print(len(df.index))
 # commish = df.loc[df['league_commish'] == 1]
 # print(commish)
@@ -24,6 +26,8 @@ dataset_id = "funky-fantasy-hosting-1.ff_league_table"
 # print(type(team_name))
 # if team_name == "Team Hedayati":
 #     print("yay")
+
+#export GOOGLE_APPLICATION_CREDENTIALS=ff_big_query.json
 #---------------------------------------------------------------
 
 

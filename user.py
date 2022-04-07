@@ -1,4 +1,4 @@
-import league, matchup, player, playoffs, team
+from FunkyFantasyHosting import league, matchup, player, playoffs, team
 
 #Define the type of leagueList, which is a list of leagues
 leagueListType = 'list[league.League]'
@@ -19,11 +19,11 @@ class User:
     def logout():
         return None
 
-    def add_league(self, league: league.League):
+    def add_league(self, league):
         self.leagueList.add(league)
         return True
 
-    def remove_league(self, league: league.League):
+    def remove_league(self, league):
         targetId = league.get_id
         index = 0
         for lge in self.leagueList:

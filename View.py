@@ -2,6 +2,7 @@
 from flask import Flask, request, abort, url_for, redirect, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
+from FunkyFantasyHosting import league, team, user, player, matchup, playoffs, bigquery_fun
 # from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
 # init #
@@ -46,11 +47,13 @@ def account_screen(userTeams=None):
 	if "username" in session:
 		#TODO Call method to populate a table representing list of leagues a user belongs to
 		#For now displays a hyptothetical list of leagues made by Connor
+		testLeague = league.League(721301807)
+		teams = testLeague.get_teams()
 		userTeams = [
-			{"league": "Atlantic", "team": "Buffalo Sabres", "record": "23-33"},
-			{"league": "Metropolitan", "team": "Pittsburgh Penguins", "record": "40-17"},
-			{"league": "Central", "team": "Chicago Blackhawks", "record": "24-32"},
-			{"league": "Pacific", "team": "Vegas Golden Knights", "record": "36-28"},
+			{"league": "Atlantic", "team": teams[0].get_name(), "record": "23-33"},
+			{"league": "Metropolitan", "team": teams[1].get_name(), "record": "40-17"},
+			{"league": "Central", "team": teams[2].get_name(), "record": "24-32"},
+			{"league": "Pacific", "team": teams[3].get_name(), "record": "36-28"},
 		]
 		if request.method == "POST":
 			#TODO modeify the way changing an active league is done by the user, will require cooresponding changes to account.html
