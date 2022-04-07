@@ -71,6 +71,8 @@ def account_screen(userTeams=None):
 @app.route("/league")
 @app.route("/league/<leagueName>")
 def leagues_screen(leagueName=None):
+	if leagueName is not None:
+		session["leagueID"] = leagueName
 	if "leagueID" in session:
 		# TODO Call function to load in standings cooresponding table data for league, for now loads sample data made by connor
 		# TODO: Convert example lists to database calls
@@ -93,15 +95,17 @@ def leagues_screen(leagueName=None):
 @app.route("/team/<leagueName>/<teamName>")
 def team(leagueName=None, teamName=None):
 	# TODO: Grab team / bench from backend
+	# TODO: Determine which team owns the team
 	teamList = [
 		{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "opp": "Browns", "points": 10},
 		{"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "opp": "Browns", "points": 20},
 		{"link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "opp": "Browns", "points": 13},
 	]
 	benchList = [
-		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5}
+		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5},
+		{"link": "https://www.espn.com/nfl/player/_/id/3932905/diontae-johnson", "position": "WR", "name": "Diontae Johnson", "opp": "Browns", "points": 12},
 	]
-	return render_template("team.html", team=teamList, bench=benchList)
+	return render_template("team.html", team=teamList, bench=benchList, league=leagueName, teamOwner="test")
 
 @app.route("/matchup/<matchupId>")
 def matchup(matchupId=None):
