@@ -14,7 +14,7 @@ class League:
 
 
 
-    def __init__(self, id: int, name: str, type: int, teamList: 'list[team.Team]', rosterMax: int, commish: user.User, playerList: 'list[player.Player]', matchupList: 'list[matchup.Matchup]', size: int, waiverType: int, FAABBudget: int, waiverDropPeriod: int,):
+    def __init__(self, id, name, type, teamList, rosterMax, commish, playerList, matchupList, size, waiverType, FAABBudget, waiverDropPeriod):
         self.id = id
         self.name = name
         self.type = type
@@ -50,7 +50,7 @@ class League:
 
     #No checking is happening, we need to check to make sure that all the steps that happen in this function actually happen
     #If dropping player 2 fails somehow, we have to be able to undo or not do the dropping of player 1
-    def trade_player(self, player1: player.Player, player2: player.Player):
+    def trade_player(self, player1, player2):
         team1 = self.teamList(self.find_team(player1.get_league_team()))
         team2 = self.teamList(self.find_team(player2.get_league_team()))
 
@@ -67,7 +67,7 @@ class League:
         return True
 
     #Adds a team to the team list
-    def add_team(self, team: team.Team):
+    def add_team(self, team):
         for tm in self.teamList:
             if tm.get_id() == team.get_id(): #Teams cannot have the same ID
                 return(False)
@@ -76,7 +76,7 @@ class League:
         self.teamList.add(team)
         return True
     
-    def remove_team(self, team: team.Team):
+    def remove_team(self, team):
         index = 0
         for tm in self.teamList:
             if tm.get_id() == team.get_id():
@@ -85,7 +85,7 @@ class League:
             index += 1
         return False
 
-    def find_team(self, id: int):
+    def find_team(self, id):
         index = 0
         for tm in self.teamList:
             if tm.get_id() == id:
@@ -101,11 +101,11 @@ class League:
     def set_scoring():
         return None
 
-    def set_matchup(self, homeTeam: team.Team, awayTeam: team.Team, week: int):
+    def set_matchup(self, homeTeam, awayTeam, week):
         if self.find_team(homeTeam.get_id()) == -1 or self.find_team(awayTeam.get_id()) == -1:
             return False
         
-        newMatchup = matchup.Matchup(homeTeam, awayTeam, self.get_id(), week)
+        newMatchup = matchup(homeTeam, awayTeam, self.get_id(), week)
 
         return True
         

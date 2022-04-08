@@ -21,11 +21,24 @@
 	<h4>{% block h4 %}Enter your login credentials below to access your Funky Fantasy Hosting account {% endblock %}</h4>
 	<br>
 	
-	<form action="" method="post">
-	  <label for="username/email">Username or Email Adress:</label>
-	  <input type="text" id="username/email" name="username" value="{{request.form.username }}"><br><br>
-	  <label for="password">Password:</label>
-	  <input type="text" id="password" name="password" value="{{request.form.password }}"><br><br>
-	  <input type="submit" value="Submit">
-	</form>
+	<form>
+        <section>
+            <div class="form-group">
+              <label for="username"><b>Username</b></label><br>
+              <input type="text" class="form-control" placeholder="Enter Username" name="username" required>
+              <br>
+            </div>
+
+            <div class="form-group">
+              <label for="password"><b>Password</b></label><br>
+              <input type="password" class="form-control" placeholder="Enter Password" name="password" required>
+              <br>
+            </div>
+
+            <div class="form-group">
+              <button type="submit" value="True" name="login" formmethod="POST" class="btn btn-primary">Login</button>
+              <br>
+            </div>
+		</section>
+    </form>
 {% endblock %}

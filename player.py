@@ -1,7 +1,7 @@
 import team
 
 class Player:
-    def __init__(self, id: int, name: str, nflTeam: str, leagueTeam: int, injuryStatus: str, playerRankings: int, news: str, playerBio: str):
+    def __init__(self, id, name, nflTeam, leagueTeam, injuryStatus, playerRankings, news, playerBio):
         self.id = id
         self.name = name
         self.nflTeam = nflTeam
@@ -25,6 +25,6 @@ class Player:
     def get_league_team(self):
         return self.leagueTeam
 
-    def set_league_team(self, team:team.Team):
+    def set_league_team(self, team):
         self.leagueTeam = team.get_id()
         return True
