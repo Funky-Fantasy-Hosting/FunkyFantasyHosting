@@ -39,13 +39,32 @@ def add_new_league(lid, l_type=0, week=1):
     # hard code example for testing (private league)
     # league = League(league_id=1151092, year=2019, espn_s2=s2, swid=sw_id, debug=True)
     league = League(league_id=lid, year=2022)
-    df_league = pd.DataFrame(columns=['league_id', 'team_id', 'team_name', 'league_type', 'user_ids',
+    df_league = pd.DataFrame(columns=['league_id', 'league_name','team_id', 'team_name', 'league_type', 'user_ids',
                                       'score_settings', 'league_size', 'league_commish'])
+
+    score_settings_dict = {
+        "PY": 0.04,     # Passing Yards
+        "PTD": 4,       # Passing TDs
+        "INT": -2,      # Interceptions
+        "2PC": 2,       # 2 Point conversions
+        "RY": 0.1,      # Rushing Yards
+        "RTD": 6,       # Rushing TDs
+        "2PR": 2,       # Rushing 2 point conversions
+        "REY": 0.1,     # reception Yards
+        "REC": 1,       # Receptions
+        "RETD": 6,      # Reception TDs
+        "2PRE": 2,      # Reception 2 point conversions
+        "FUML": -2,     # Fumbles
+    }
 
     # row for every team, right now assumption commish is first team
     for team in league.teams:  # loop to create dictionary
-        df_league = df_league.append({'league_id': lid, 'team_id': team.team_id, 'team_name': team.team_name,
+        df_league = df_league.append({'league_id': lid,
+                                      'league_name': league.settings.name,
+                                      'team_id': team.team_id,
+                                      'team_name': team.team_name,
                                       'league_type': l_type,
+                                      'scoring_settings': score_settings_dict,
                                       'league_size': len(league.teams),
                                       'league_commish': (1 if team.team_id == 1 else 0)}, ignore_index=True)
 
@@ -84,7 +103,7 @@ def add_new_league(lid, l_type=0, week=1):
     # removing defenses
     df_player.drop(df_player[df_player.player_id < 0].index, inplace=True)
 
-    print(df_player)
+    print(df_league)
 
     # Starting team table build
     df_team = pd.DataFrame(columns=['team_id', 'team_name', 'user_id',
