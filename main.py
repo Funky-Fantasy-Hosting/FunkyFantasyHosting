@@ -5,6 +5,8 @@ from sqlalchemy.sql.expression import func
 import user as User
 from data_access import *
 import bcrypt
+from FunkyFantasyHosting import league, team, user, player, matchup, playoffs, bigquery_fun
+
 # from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
 # init #
@@ -49,11 +51,13 @@ def account_screen(userTeams=None):
 	if "username" in session:
 		#TODO Call method to populate a table representing list of leagues a user belongs to
 		#For now displays a hyptothetical list of leagues made by Connor
+		testLeague = league.League(721301807)
+		teams = testLeague.get_teams()
 		userTeams = [
-			{"league": "Atlantic", "team": "Buffalo Sabres", "record": "23-33"},
-			{"league": "Metropolitan", "team": "Pittsburgh Penguins", "record": "40-17"},
-			{"league": "Central", "team": "Chicago Blackhawks", "record": "24-32"},
-			{"league": "Pacific", "team": "Vegas Golden Knights", "record": "36-28"},
+			{"league": "Atlantic", "team": teams[0].get_name(), "record": "23-33"},
+			{"league": "Metropolitan", "team": teams[1].get_name(), "record": "40-17"},
+			{"league": "Central", "team": teams[2].get_name(), "record": "24-32"},
+			{"league": "Pacific", "team": teams[3].get_name(), "record": "36-28"},
 		]
 		if request.method == "POST":
 			#TODO modeify the way changing an active league is done by the user, will require cooresponding changes to account.html
@@ -74,6 +78,8 @@ def account_screen(userTeams=None):
 @app.route("/league")
 @app.route("/league/<leagueName>")
 def leagues_screen(leagueName=None):
+	if leagueName is not None:
+		session["leagueID"] = leagueName
 	if "leagueID" in session:
 		# TODO Call function to load in standings cooresponding table data for league, for now loads sample data made by connor
 		# TODO: Convert example lists to database calls
@@ -96,15 +102,17 @@ def leagues_screen(leagueName=None):
 @app.route("/team/<leagueName>/<teamName>")
 def team(leagueName=None, teamName=None):
 	# TODO: Grab team / bench from backend
+	# TODO: Determine which team owns the team
 	teamList = [
 		{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "opp": "Browns", "points": 10},
 		{"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "opp": "Browns", "points": 20},
 		{"link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "opp": "Browns", "points": 13},
 	]
 	benchList = [
-		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5}
+		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5},
+		{"link": "https://www.espn.com/nfl/player/_/id/3932905/diontae-johnson", "position": "WR", "name": "Diontae Johnson", "opp": "Browns", "points": 12},
 	]
-	return render_template("team.html", team=teamList, bench=benchList)
+	return render_template("team.html", team=teamList, bench=benchList, league=leagueName, teamOwner="test")
 
 @app.route("/matchup/<matchupId>")
 def matchup(matchupId=None):
@@ -192,6 +200,7 @@ def login_screen():
 				# Username or Password does not exist
 				return (redirect("login"))
 		return (render_template("login.html"))
+
 
 # Create Account Screen
 @app.route('/create_account', methods=["GET", "POST"])
