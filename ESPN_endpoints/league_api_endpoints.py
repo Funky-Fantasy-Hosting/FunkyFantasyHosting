@@ -157,12 +157,12 @@ def add_new_league(lid, l_type=0, week=1):
     return df_league, df_player, df_team
 
 
+# Testing functions
 
-
-add_new_league(721301807, 2)
+# add league testing functions
 # our public league id is: 721301807
 # my private league id is: 1151092
-
+add_new_league(721301807, 2)
 
 # example of pulling a player
 # lamar_jackson = league.player_info(playerId=3916387)
