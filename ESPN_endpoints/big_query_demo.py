@@ -18,15 +18,43 @@ pd.set_option('display.max_columns', 25)
 
 bqclient = bigquery.Client()
 
-# Download query results.
+# # Download query results.
+# query_string = """
+# SELECT *
+# FROM `funky-fantasy-hosting-1.player_gamelogs_pivot.nfl_player_bio`
+#
+# """
+
+
+# How to overwrite: https://cloud.google.com/bigquery/docs/reference/rest/v2/Job
+# writeDisposition:
+# WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data and uses the schema from the query result.
+# WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
+
+# job_config = bigquery.CopyJobConfig()
+# job_config.write_disposition = "WRITE_TRUNCATE"
+# job = client.copy_table(
+#     source_table_ref,
+#     dest_table_ref,
+#     location='US',
+#     job_config=job_config)  # API request
+
+
 query_string = """
-SELECT *
-FROM `funky-fantasy-hosting-1.player_gamelogs_pivot.nfl_player_bio`
+UPDATE  `funky-fantasy-hosting-1.ff_league_table.league_721301807` 
+SET user_ids = 5
+WHERE user_ids is null 
 
 """
 
+id = 721301807
+
+test_dict = {'test': 5, 'scooby':3}
+
+print(query_string.format(test=test_dict))
+
 dataframe = (
-    bqclient.query(query_string)
+    bqclient.query(query_string.format(test=test_dict))
     .result()
     .to_dataframe(
         # Optionally, explicitly request to use the BigQuery Storage API. As of
