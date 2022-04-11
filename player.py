@@ -1,7 +1,7 @@
 from FunkyFantasyHosting import team
 
 class Player:
-    def __init__(self, id: int, name: str, nflTeam: str, leagueTeam: int, injuryStatus: str, playerRankings: int, news: str, playerBio: str):
+    def __init__(self, id, name, nflTeam, leagueTeam, injuryStatus, playerRankings, news, playerBio):
         self.id = id
         self.name = name
         self.nflTeam = nflTeam

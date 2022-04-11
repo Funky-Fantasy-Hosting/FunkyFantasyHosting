@@ -2,7 +2,11 @@
 from flask import Flask, request, abort, url_for, redirect, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
+import user as User
+from data_access import *
+import bcrypt
 from FunkyFantasyHosting import league, team, user, player, matchup, playoffs, bigquery_fun
+
 # from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
 # init #
@@ -172,43 +176,66 @@ def logout():
 # Login Screen
 @app.route('/login', methods=["GET", "POST"])
 def login_screen():
-	if "username" in session:
-		return redirect(url_for("account_screen"))
-	elif request.method == "POST":
-		#modify calls below to call method to query database and check for valid login
-		#for now passes as a succesful login if username and password are both "test"
-		username = request.form['username']
-		password = request.form['password']
-		if username != 'test' or password != 'test':
-			return render_template("invalid_login.html")
-		else:
-			session["username"] = request.form["username"]
-			return redirect(url_for("account_screen"))
-	else:
-		return render_template("login.html")
+		if request.form.get("login") == "True":
+			username = request.values.get('username')
+			password = request.values.get('password')
+			
+			hashedPassword = createHashedPassword(password)
+
+			# create user object
+			user = User(username, hashedPassword, None, None, None, None)
+
+			# check if user exists
+			entity = get_user_entity(user)
+			if entity:
+				#User exists
+				user2 = entity_to_user(entity)
+				if checkPassword(password, user2.password):
+					session['username'] = username
+					return (redirect("/"))
+				else:
+					# Username and Password do not match
+					return (redirect("login"))
+			else:
+				# Username or Password does not exist
+				return (redirect("login"))
+		return (render_template("login.html"))
+
 
 # Create Account Screen
 @app.route('/create_account', methods=["GET", "POST"])
 def create_account():
-	if "username" in session:
-		return redirect(url_for("account_screen"))
-	elif request.method == "POST":
-		#modify calls below to call methods which register user account in DB
-		#Methods will need to check if inputs are valid ie: password long enough length, username not taken
-		#for now as long as username is test, account creation will be successful 
-		fname = request.form['fname']
-		lname = request.form['lname']
-		username = request.form['username']
-		screenName = request.form['screen name']
-		emial = request.form['email']
-		password = request.form['password']
-		if username != 'test':
-			return render_template("invalid_create_account.html")
-		else:
-			return redirect(url_for("login_screen"))
-	else:
-		return render_template("create_account.html")
+	if request.method == 'POST':
+		if request.form.get("create_account") == "True":
+			email = request.values.get('email')
+			username = request.values.get('username')
+			password = request.values.get('password')
+			screenname = request.values.get('screenname')
+			hashedPassword = createHashedPassword(password)
+			user = User(username, hashedPassword, screenname, None, None, None)
 
+			temp = get_user_entity(user)
+
+			if temp:
+				#User already exists error
+				entity_to_user(temp)
+				return(render_template("login.html"))
+			else:
+				entity = user_to_entity(user)
+				update_entity(entity)
+				session['username'] = username
+				return (redirect("/"))
+	return (render_template("create_account.html"))
 
 # Secrect key for sessions
 app.secret_key = "!s3cr3t k3y!"
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=8080, debug=True)
+
+# Create hashed password
+def createHashedPassword(password):
+    return bcrypt.hashpw(password, bcrypt.gensalt())
+
+def checkPassword(password, hashedPassword):
+    return bcrypt.checkpw(password, hashedPassword)

@@ -5,7 +5,7 @@ leagueListType = 'list[league.League]'
 
 
 class User:
-    def __init__(self, username: str, password: str, screenname: str, leagueList: leagueListType, commishList, avatar:str):
+    def __init__(self, username, password, screenname, leagueList, commishList, avatar):
         self.username = username
         self.password = password #Obviously username and password are going to be more secure than this
         self.screenname = screenname
@@ -35,7 +35,7 @@ class User:
 
         return False
     
-    def update_avatar(self, avatar: str):
+    def update_avatar(self, avatar):
         self.avatar = avatar
         return True
 

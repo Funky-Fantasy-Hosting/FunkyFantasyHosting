@@ -30,7 +30,7 @@ class Team:
     def eval_record(self, winWeight, tieWeight, lossWeight):
         return (self.record["Wins"] * winWeight + self.record["Ties"] * tieWeight + self.record["Losses"] * lossWeight)
 
-    def add_player(self, player: player.Player):
+    def add_player(self, player):
         for plyr in self.playerList:
             if(player.get_id() == plyr.get.id()):
                 return False
@@ -39,7 +39,7 @@ class Team:
         return True
 
 
-    def drop_player(self, player:player.Player):
+    def drop_player(self, player):
         index = 0
         for plyr in self.playerList:
             if(player.get_id() == plyr.get.id()):
