@@ -6,7 +6,7 @@
 	<div class="topnav">
 		<a class="fLeft" href="/home">Home</a>
 		<a class="fLeft active" href="/account">Account</a>
-		<a class="fLeft" href="/leagues">Leagues</a>
+		<a class="fLeft" href="/league">League</a>
 
 		{% if session["username"] %}
 			<a class="fRight" href="/logout">Logout</a>
@@ -18,9 +18,9 @@
 {% endblock %}
 
 {% block body %}
-	{% if username %}
+	{% if session["username"] %}
 		<!-- There is a user logged in. -->
-		<h2>Welcome, {{ username }}</h2>
+		<h2>Welcome, {{ session["username"] }}</h2>
 		<table class="fCenter">
 			<tr>
 				<th class="League">League</th>
@@ -29,12 +29,13 @@
 			</tr>
 			{% for team in teams %}
 				<tr class="rBorder">
-					<td class="League"><a href="/leagues/{{ team.league }}">{{ team.league }}</a></td>
+					<td class="League"><a href="/league/{{ team.league }}">{{ team.league }}</a></td>
 					<td class="Team rBorder"><a href="/team/{{ team.league }}/{{ team.team }}">{{ team.team }}</a></td>
-					<td class="Record"><a href="/team/{{ team.team }}/{{ team.team }}">{{ team.record }}</a></td>
+					<td class="Record"><a href="/league/{{ team.league }}">{{ team.record }}</a></td>
 				</tr>
 			{% endfor %}
 		</table>
+		<h3><a href="/new_league">Click here to import a league from ESPN.</a></h3>
 	{% else %}
 		<!-- There is no user logged in. -->
 		<h2 href="/login" class="fCenter">Must be logged in to view page.</h2>
