@@ -1,4 +1,4 @@
-from FunkyFantasyHosting import team
+import team
 
 class Player:
     def __init__(self, id, name, nflTeam, leagueTeam, injuryStatus, playerRankings, news, playerBio):

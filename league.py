@@ -1,4 +1,4 @@
-from FunkyFantasyHosting import team, user, player, matchup, playoffs, bigquery_fun
+import team, user, player, matchup, playoffs, bigquery_fun
 
 class League:
 
@@ -10,7 +10,7 @@ class League:
     #The differnt types of waivers, which is either waiver or faab
     WAIVER, FAAB = 0, 1
 
-    def __init__(self, id, name, type, teamList, rosterMax, commish, playerList, matchupList, size, waiverType, FAABBudget, waiverDropPeriod):
+    def __init__(self, id):
         self.id = id
 
         lg_df = bigquery_fun.get_league_df(id) #The league dataframe

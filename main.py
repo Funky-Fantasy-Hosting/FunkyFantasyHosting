@@ -5,9 +5,9 @@ from sqlalchemy.sql.expression import func
 import user as User
 from data_access import *
 import bcrypt
-from FunkyFantasyHosting import league, team, user, player, matchup, playoffs, bigquery_fun
+import league, team, user, player, matchup, playoffs, bigquery_fun
 
-# from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
+#from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
 # init #
 app = Flask(__name__)
