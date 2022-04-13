@@ -144,49 +144,71 @@ def add_new_league(lid, l_type=0, week=1):
             table.num_rows, len(table.schema), table_id_league_teams.format(id=lid)))
 
 
-    # saving to the player table
-    job = client.load_table_from_dataframe(
-        df_player, table_id_league_players.format(id=lid),
-    )  # Make an API request.
-    job.result()  # Wait for the job to complete.
-
-    table = client.get_table(table_id_league_players.format(id=lid))  # Make an API request.
-    print(
-        "Loaded {} rows and {} columns to {}".format(
-            table.num_rows, len(table.schema), table_id_league_players.format(id=lid)))
+    # # saving to the player table
+    # job = client.load_table_from_dataframe(
+    #     df_player, table_id_league_players.format(id=lid),
+    # )  # Make an API request.
+    # job.result()  # Wait for the job to complete.
+    #
+    # table = client.get_table(table_id_league_players.format(id=lid))  # Make an API request.
+    # print(
+    #     "Loaded {} rows and {} columns to {}".format(
+    #         table.num_rows, len(table.schema), table_id_league_players.format(id=lid)))
 
     return df_league, df_player, df_team
 
 
 def update_user(lid, uid, tid):
-    job_config = bigquery.CopyJobConfig()
+    job_config = bigquery.LoadJobConfig()
     job_config.write_disposition = "WRITE_TRUNCATE"
 
+    # update TEAMS table
     query_string = """
     SELECT *
     FROM `funky-fantasy-hosting-1.ff_team_table.league_{lid}`
     """
 
-    df_load = (
+    df_load_team = (
         client.query(query_string.format(lid=lid))
             .result()
             .to_dataframe(
-            # Optionally, explicitly request to use the BigQuery Storage API. As of
-            # google-cloud-bigquery version 1.26.0 and above, the BigQuery Storage
-            # API is used by default.
             create_bqstorage_client=True,
         )
     )
 
-    df_load['user_id'].loc[df_load['team_id'] == tid] = uid
+    df_load_team['user_id'].loc[df_load_team['team_id'] == tid] = uid
 
-    # saving to the player table
+    # saving to the LEAGUE table
     job = client.load_table_from_dataframe(
-        df_load, table_id_league_teams.format(id=lid), job_config
+        df_load_team, table_id_league_teams.format(id=lid),
+        job_config=job_config
     )  # Make an API request.
     job.result()  # Wait for the job to complete.
 
-    return df_load
+    # update LEAGUE table
+    query_string = """
+    SELECT *
+    FROM `funky-fantasy-hosting-1.ff_league_table.league_{lid}`
+    """
+
+    df_load_league = (
+        client.query(query_string.format(lid=lid))
+            .result()
+            .to_dataframe(
+            create_bqstorage_client=True,
+        )
+    )
+
+    df_load_league['user_ids'].loc[df_load_league['team_id'] == tid] = uid
+
+    # saving to the player table
+    job = client.load_table_from_dataframe(
+        df_load_league, table_id_league.format(id=lid),
+        job_config=job_config
+    )  # Make an API request.
+    job.result()  # Wait for the job to complete.
+
+    return df_load_team
 
 
 def update_lineup(lid, pid, position):
