@@ -14,6 +14,7 @@ desired_width=320
 pd.set_option('display.width', desired_width)
 np.set_printoptions(linewidth=desired_width)
 pd.set_option('display.max_columns', 25)
+pd.set_option('mode.chained_assignment', None)
 
 # K's personal cookie info
 s2 = "AECAlZGGZ%2BKVVazn84JPRPKlzGn8c0h0mgcW%2BmMD7rZbRi7Eo%2FD0AftzOhmp%2Bp2OXGN4jU37nau7amjPktismejCclO5Nw2itHBLxlMp5ho0TL9dQYfP8ElaaVYyi8r1rL5VfDEz9ZvVDKtNE2kqhfi5yeNP5G4H75oQV7I6j4oIqUTPdvXSW6KExsDka6tNgzr5Nlrbo1VLR2v7wqsUwnPHjL2y930EX9xhSzVCvN7Nhq47eb%2B%2FTed93BQHkkt1zSj0pk6BF0cQZVSWymyq5%2BSV"
@@ -39,21 +40,21 @@ def add_new_league(lid, l_type=0, week=1):
     # hard code example for testing (private league)
     # league = League(league_id=1151092, year=2019, espn_s2=s2, swid=sw_id, debug=True)
     league = League(league_id=lid, year=2022)
-    df_league = pd.DataFrame(columns=['league_id', 'league_name','team_id', 'team_name', 'league_type', 'user_ids',
+    df_league = pd.DataFrame(columns=['league_id', 'league_name', 'team_id', 'team_name', 'league_type', 'user_ids',
                                       'score_settings', 'league_size', 'league_commish'])
 
     score_settings_dict = {
         "PY": 0.04,     # Passing Yards
         "PTD": 4,       # Passing TDs
         "INT": -2,      # Interceptions
-        "2PC": 2,       # 2 Point conversions
+        "TWOPC": 2,       # 2 Point conversions
         "RY": 0.1,      # Rushing Yards
         "RTD": 6,       # Rushing TDs
-        "2PR": 2,       # Rushing 2 point conversions
+        "TWOPR": 2,       # Rushing 2 point conversions
         "REY": 0.1,     # reception Yards
         "REC": 1,       # Receptions
         "RETD": 6,      # Reception TDs
-        "2PRE": 2,      # Reception 2 point conversions
+        "TWOPRE": 2,      # Reception 2 point conversions
         "FUML": -2,     # Fumbles
     }
 
@@ -157,12 +158,53 @@ def add_new_league(lid, l_type=0, week=1):
     return df_league, df_player, df_team
 
 
+def update_user(lid, uid, tid):
+    job_config = bigquery.CopyJobConfig()
+    job_config.write_disposition = "WRITE_TRUNCATE"
+
+    query_string = """
+    SELECT *
+    FROM `funky-fantasy-hosting-1.ff_team_table.league_{lid}`
+    """
+
+    df_load = (
+        client.query(query_string.format(lid=lid))
+            .result()
+            .to_dataframe(
+            # Optionally, explicitly request to use the BigQuery Storage API. As of
+            # google-cloud-bigquery version 1.26.0 and above, the BigQuery Storage
+            # API is used by default.
+            create_bqstorage_client=True,
+        )
+    )
+
+    df_load['user_id'].loc[df_load['team_id'] == tid] = uid
+
+    # saving to the player table
+    job = client.load_table_from_dataframe(
+        df_load, table_id_league_teams.format(id=lid), job_config
+    )  # Make an API request.
+    job.result()  # Wait for the job to complete.
+
+    return df_load
+
+
+def update_lineup(lid, pid, position):
+    return None
+
+
+def get_gamelog(pid):
+    return None
+
 # Testing functions
 
 # add league testing functions
 # our public league id is: 721301807
 # my private league id is: 1151092
 add_new_league(721301807, 2)
+
+
+update_user(721301807, 666, 1)
 
 # example of pulling a player
 # lamar_jackson = league.player_info(playerId=3916387)
