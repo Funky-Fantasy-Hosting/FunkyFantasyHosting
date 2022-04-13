@@ -1,4 +1,4 @@
-from FunkyFantasyHosting import league, matchup, player, playoffs, user
+import league, matchup, player, playoffs, user
 
 #Defining the type of playerList, which is a list of players
 playerListType = 'list[player.Player]'

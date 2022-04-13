@@ -5,9 +5,9 @@ from sqlalchemy.sql.expression import func
 import user as User
 from data_access import *
 import bcrypt
-from FunkyFantasyHosting import league, team, user, player, matchup, playoffs, bigquery_fun
+import league, team, user, player, matchup, playoffs, bigquery_fun
 
-# from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
+#from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
 # init #
 app = Flask(__name__)
@@ -44,6 +44,23 @@ def import_league():
 		# Grab League information from ESPN
 		# df_league_table = pull_new_league(request.form["league_id"], 2) 	# example of new league
 		return render_template("import_successful.html", league_type=request.form["league_type"], league_id=request.form["league_id"])
+
+# Join League Screen
+@app.route("/join_league/", methods=["GET", "POST"])
+def join_league():
+	if "username" in session:
+		if request.method == "GET":
+			return render_template("join_league.html")
+		else:
+			#TODO test/register signed in user to appropriate team using given league id and team name
+			#call function to get list/dict of teams from entered league ID ie list/dict = function(request.form["league_id"])
+			#if request.form["team_name"] in list/dict
+				#update DB, render template for updated account page
+			#else 
+				#return render_template("invalid_join_league.html")
+			return redirect(url_for("account_screen"))
+	else: 
+		return render_template("account.html")
 
 # Account Screen
 @app.route("/account", methods=["GET", "POST"])
