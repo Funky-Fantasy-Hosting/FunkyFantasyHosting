@@ -110,11 +110,18 @@ def add_new_league(lid, l_type=0, week=1):
     df_team = pd.DataFrame(columns=['team_id', 'team_name', 'user_id',
                                     'lineup', 'record'])
 
+    starter_list = []
     for team in league.teams:
-        lineup = {'BENCH': []}
+        lineup = {'BENCH': [], 'STARTER': []}
         for player in team.roster:
-            lineup['BENCH'].append(player.playerId)
+            if len(starter_list) < 7:
+                starter_list.append(player.playerId)
+            elif player.playerId < 0:
+                continue
+            else:
+                lineup['BENCH'].append(player.playerId)
 
+        lineup['STARTER'] = starter_list
         df_team = df_team.append({'team_id': team.team_id,
                                     'team_name': team.team_name,
                                     'user_id': -1,
@@ -144,16 +151,16 @@ def add_new_league(lid, l_type=0, week=1):
             table.num_rows, len(table.schema), table_id_league_teams.format(id=lid)))
 
 
-    # # saving to the player table
-    # job = client.load_table_from_dataframe(
-    #     df_player, table_id_league_players.format(id=lid),
-    # )  # Make an API request.
-    # job.result()  # Wait for the job to complete.
-    #
-    # table = client.get_table(table_id_league_players.format(id=lid))  # Make an API request.
-    # print(
-    #     "Loaded {} rows and {} columns to {}".format(
-    #         table.num_rows, len(table.schema), table_id_league_players.format(id=lid)))
+    # saving to the player table
+    job = client.load_table_from_dataframe(
+        df_player, table_id_league_players.format(id=lid),
+    )  # Make an API request.
+    job.result()  # Wait for the job to complete.
+
+    table = client.get_table(table_id_league_players.format(id=lid))  # Make an API request.
+    print(
+        "Loaded {} rows and {} columns to {}".format(
+            table.num_rows, len(table.schema), table_id_league_players.format(id=lid)))
 
     return df_league, df_player, df_team
 
@@ -223,10 +230,9 @@ def get_gamelog(pid):
 # add league testing functions
 # our public league id is: 721301807
 # my private league id is: 1151092
-add_new_league(721301807, 2)
 
-
-update_user(721301807, 666, 1)
+# add_new_league(721301807, 2)
+# update_user(721301807, 666, 1)
 
 # example of pulling a player
 # lamar_jackson = league.player_info(playerId=3916387)
