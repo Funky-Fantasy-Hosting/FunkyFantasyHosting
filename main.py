@@ -113,6 +113,29 @@ def leagues_screen(leagueName=None):
 		return render_template("league.html", teams=standings, matchups=matchups, week=5)
 	else:
 		return redirect(url_for("account_screen"))
+		
+# Free Agent Screen
+@app.route("/freeAgents", methods=["GET", "POST"])
+def free_Agent_Screen(freeAgents=None):
+	if "username" in session:
+		if "leagueID" in session:
+			#TODO Call method to populate a table representing list of players not belonging a team for a particiular league
+			#For now hypothetical list created below
+			freeAgents = [
+				{"name": "Zach Wilson", "nflTeam": "New York Jets"},
+				{"name": "Rashaad Penny", "nflTeam": "Seattle Seahawks"},
+				{"name": "Randall Cobb", "nflTeam": "Green Bay Packers"},
+				{"name": "Cole Kmet", "nflTeam": "Chicago Bears"},
+			]
+			if request.method == "POST":
+				#TODO have button trigger call to update DB
+				return redirect(url_for("league_screen"))
+			else:
+				return render_template("free_agent.html", freeAgents=freeAgents)
+		else:
+			return redirect(url_for("account_screen"))
+	else: 
+		return render_template("free_agent.html")
 
 # Team Screen
 @app.route("/team")
@@ -212,10 +235,10 @@ def login_screen():
 					return (redirect("/"))
 				else:
 					# Username and Password do not match
-					return (redirect("login"))
+					return render_template("invalid_login.html")
 			else:
 				# Username or Password does not exist
-				return (redirect("login"))
+				return render_template("invalid_login.html")
 		return (render_template("login.html"))
 
 
