@@ -1,4 +1,4 @@
-import league, matchup, player, playoffs, user
+import FunkyFantasyHosting.league, FunkyFantasyHosting.matchup, FunkyFantasyHosting.player, FunkyFantasyHosting.playoffs, FunkyFantasyHosting.user
 
 #Defining the type of playerList, which is a list of players
 playerListType = 'list[player.Player]'
@@ -6,17 +6,19 @@ playerListType = 'list[player.Player]'
 
 class Team:
     def __init__(self, team_df):
-        self.id = team_df.loc['team_id']
-        self.name = team_df.loc['team_name']
-        self.playerList = team_df.loc['lineup']
+        self.id = 'team_id'
+        self.name = 'team_name'
+        self.playerList = [{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "opp": "Browns", "points": 10},
+        {"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "opp": "Browns", "points": 20},
+        {"link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "opp": "Browns", "points": 13},]
         self.startingLineup = None
-        self.owner = team_df.loc['user_id'] #The ID of the user that owns this team.
+        self.owner = 'test' #The ID of the user that owns this team.
         self.nextMatchup = None
         self.status = None
         self.FAABBudget = None
         self.waiverPriority = None
         self.rosterSize = len(self.playerList)
-        self.record = team_df.loc['record']
+        self.record = "0-0"
         self.rank = None
 
     def get_id(self):

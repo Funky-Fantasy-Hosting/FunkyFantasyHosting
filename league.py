@@ -1,4 +1,4 @@
-import team, user, player, matchup, playoffs, bigquery_fun
+from FunkyFantasyHosting import team, user, player, matchup, playoffs, bigquery_fun
 
 class League:
 
@@ -13,21 +13,21 @@ class League:
     def __init__(self, id):
         self.id = id
 
-        lg_df = bigquery_fun.get_league_df(id) #The league dataframe
-        tm_df = bigquery_fun.get_team_df(id) #The team dataframe
+        #lg_df = bigquery_fun.get_league_df(id) #The league dataframe
+        #tm_df = bigquery_fun.get_team_df(id) #The team dataframe
         #pl_df = bigquery_fun.get_player_df(id) #The player dataframe
-        commish_df = lg_df.loc[lg_df['league_commish'] == 1]
+        #commish_df = lg_df.loc[lg_df['league_commish'] == 1]
 
         self.name = "Placeholder"
-        self.type = lg_df.iloc[0]['league_type']
-        self.teamList = []
+        self.type = 0
+        self.teamList = [team.Team("Team 1")]
         #populate the team list
-        for x in range(len(tm_df.index)):
-            teamToAdd = team.Team(tm_df.iloc[x])
-            self.teamList.append(teamToAdd)
+        #for x in range(len(tm_df.index)):
+        #    teamToAdd = team.Team(tm_df.iloc[x])
+        #    self.teamList.append(teamToAdd)
 
         self.rosterMax = 10
-        self.commish = commish_df.iloc[0]['user_ids']
+        self.commish = "test"
         #populate the player list
         self.playerList = None
         self.rosterSettings = None
@@ -35,7 +35,7 @@ class League:
         self.memberSettings = None
         #populate the matchup list
         self.matchupList = None
-        self.size = lg_df.iloc[0]['league_size']
+        self.size = 12
         self.waiverType = None
         self.FAABBudget = None
         self.waiverDropPeriod = None

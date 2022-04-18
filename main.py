@@ -1,13 +1,11 @@
-# Setup of importing/init comes from fl10_model.py
 from flask import Flask, request, abort, url_for, redirect, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
-import user as User
-from data_access import *
+from FunkyFantasyHosting import user as User
+from FunkyFantasyHosting.data_access import *
 import bcrypt
-import league, team, user, player, matchup, playoffs, bigquery_fun
-
-#from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
+from FunkyFantasyHosting import league, team, player, matchup, playoffs, bigquery_fun
+from xml.etree.ElementTree import fromstring
 
 # init #
 app = Flask(__name__)
@@ -33,7 +31,6 @@ def default():
 @app.route("/home")
 def home():
   return render_template("home.html")
-
 
 # New League Screen
 @app.route("/new_league/", methods=["GET", "POST"])
@@ -71,10 +68,10 @@ def account_screen(userTeams=None):
 		testLeague = league.League(721301807)
 		teams = testLeague.get_teams()
 		userTeams = [
-			{"league": "Atlantic", "team": teams[0].get_name(), "record": "23-33"},
-			{"league": "Metropolitan", "team": teams[1].get_name(), "record": "40-17"},
-			{"league": "Central", "team": teams[2].get_name(), "record": "24-32"},
-			{"league": "Pacific", "team": teams[3].get_name(), "record": "36-28"},
+			{"league": testLeague.get_id(), "team": teams[0].get_name(), "record": "23-33"},
+			{"league": testLeague.get_id(), "team": teams[0].get_name(), "record": "40-17"},
+			{"league": testLeague.get_id(), "team": teams[0].get_name(), "record": "24-32"},
+			{"league": testLeague.get_id(), "team": teams[0].get_name(), "record": "36-28"},
 		]
 		if request.method == "POST":
 			#TODO modeify the way changing an active league is done by the user, will require cooresponding changes to account.html
@@ -121,13 +118,13 @@ def team(leagueName=None, teamName=None):
 	# TODO: Grab team / bench from backend
 	# TODO: Determine which team owns the team
 	teamList = [
-		{"link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "opp": "Browns", "points": 10},
-		{"link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "opp": "Browns", "points": 20},
-		{"link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "opp": "Browns", "points": 13},
+		{"id": "1", "link": "https://www.espn.com/nfl/player/_/id/3039707/mitchell-trubisky", "position": "QB", "name": "Mitchell Trubisky", "opp": "Browns", "points": 10},
+		{"id": "2", "link": "https://www.espn.com/nfl/player/_/id/4241457/najee-harris", "position": "RB", "name": "Najee Harris", "opp": "Browns", "points": 20},
+		{"id": "3", "link": "https://www.espn.com/nfl/player/_/id/4046692/chase-claypool", "position": "WR", "name": "Chase Claypool", "opp": "Browns", "points": 13},
 	]
 	benchList = [
-		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5},
-		{"link": "https://www.espn.com/nfl/player/_/id/3932905/diontae-johnson", "position": "WR", "name": "Diontae Johnson", "opp": "Browns", "points": 12},
+		{"id": "4", "link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5},
+		{"id": "5", "link": "https://www.espn.com/nfl/player/_/id/3932905/diontae-johnson", "position": "WR", "name": "Diontae Johnson", "opp": "Browns", "points": 12},
 	]
 	return render_template("team.html", team=teamList, bench=benchList, league=leagueName, teamOwner="test")
 
@@ -193,66 +190,80 @@ def logout():
 # Login Screen
 @app.route('/login', methods=["GET", "POST"])
 def login_screen():
-		if request.form.get("login") == "True":
-			username = request.values.get('username')
-			password = request.values.get('password')
-			
-			hashedPassword = createHashedPassword(password)
-
-			# create user object
-			user = User(username, hashedPassword, None, None, None, None)
-
-			# check if user exists
-			entity = get_user_entity(user)
-			if entity:
-				#User exists
-				user2 = entity_to_user(entity)
-				if checkPassword(password, user2.password):
-					session['username'] = username
-					return (redirect("/"))
-				else:
-					# Username and Password do not match
-					return (redirect("login"))
-			else:
-				# Username or Password does not exist
-				return (redirect("login"))
-		return (render_template("login.html"))
+	if "username" in session:
+		return redirect(url_for("account_screen"))
+	elif request.method == "POST":
+		#modify calls below to call method to query database and check for valid login
+		#for now passes as a succesful login if username and password are both "test"
+		username = request.form['username']
+		password = request.form['password']
+		if username != 'test' or password != 'test':
+			return render_template("invalid_login.html")
+		else:
+			session["username"] = request.form["username"]
+			return redirect(url_for("account_screen"))
+	else:
+		return render_template("login.html")
+#		if request.form.get("login") == "True":
+#			username = request.values.get('username')
+#			password = request.values.get('password')
+#			
+#			hashedPassword = createHashedPassword(password)
+#
+#			# create user object
+#			user = User(username, hashedPassword, None, None, None, None)
+#
+#			# check if user exists
+#			entity = get_user_entity(user)
+#			if entity:
+#				#User exists
+#				user2 = entity_to_user(entity)
+#				if checkPassword(password, user2.password):
+#					session['username'] = username
+#					return (redirect("/"))
+#				else:
+#					# Username and Password do not match
+#					return (redirect("login"))
+#			else:
+#				# Username or Password does not exist
+#				return (redirect("login"))
+#		return (render_template("login.html"))
 
 
 # Create Account Screen
-@app.route('/create_account', methods=["GET", "POST"])
-def create_account():
-	if request.method == 'POST':
-		if request.form.get("create_account") == "True":
-			email = request.values.get('email')
-			username = request.values.get('username')
-			password = request.values.get('password')
-			screenname = request.values.get('screenname')
-			hashedPassword = createHashedPassword(password)
-			user = User(username, hashedPassword, screenname, None, None, None)
-
-			temp = get_user_entity(user)
-
-			if temp:
-				#User already exists error
-				entity_to_user(temp)
-				return(render_template("login.html"))
-			else:
-				entity = user_to_entity(user)
-				update_entity(entity)
-				session['username'] = username
-				return (redirect("/"))
-	return (render_template("create_account.html"))
+#@app.route('/create_account', methods=["GET", "POST"])
+#def create_account():
+#	if request.method == 'POST':
+#		if request.form.get("create_account") == "True":
+#			email = request.values.get('email')
+#			username = request.values.get('username')
+#			password = request.values.get('password')
+#			screenname = request.values.get('screenname')
+#			hashedPassword = createHashedPassword(password)
+#			user = User(username, hashedPassword, screenname, None, None, None)
+#
+#			temp = get_user_entity(user)
+#
+#			if temp:
+#				#User already exists error
+#				entity_to_user(temp)
+#				return(render_template("login.html"))
+#			else:
+#				entity = user_to_entity(user)
+#				update_entity(entity)
+#				session['username'] = username
+#				return (redirect("/"))
+#	return (render_template("create_account.html"))
 
 # Secrect key for sessions
 app.secret_key = "!s3cr3t k3y!"
 
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)
+#if __name__ == '__main__':
+#    app.run(host='127.0.0.1', port=8080, debug=True)
 
 # Create hashed password
-def createHashedPassword(password):
-    return bcrypt.hashpw(password, bcrypt.gensalt())
+#def createHashedPassword(password):
+#    return bcrypt.hashpw(password, bcrypt.gensalt())
 
-def checkPassword(password, hashedPassword):
-    return bcrypt.checkpw(password, hashedPassword)
+#def checkPassword(password, hashedPassword):
+#    return bcrypt.checkpw(password, hashedPassword)

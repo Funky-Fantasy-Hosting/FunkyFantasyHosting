@@ -4,6 +4,17 @@ var p1Row;
 var button;
 var player2;
 var p2Row;
+var starters = [];
+var bench = [];
+
+function loadRoster(startIn, startOut) {
+	for (var i = 0; i < startIn.length; i++) {
+		starters.push(startIn[i]);
+	}
+	for (var i = 0; i < startOut.length; i++) {
+		bench.push(startOut[i]);
+	}
+}
 
 function swapPlayers(player) {
 	if (player1 == null) {
@@ -33,10 +44,38 @@ function swapPlayers(player) {
 			if (p1Pos.innerText == "Bench") {
 				p1Pos.innerText = p2Pos.innerText;
 				p2Pos.innerText = "Bench";
+
+				// Swap id's in starters/bench
+				for(var i = 0; i < starters.length; i++) {
+					if (starters[i] === player2["id"]) {
+						starters.splice(i, 1);
+					}
+				}
+				for (var i = 0; i < bench.length; i++) {
+					if (bench[i] === player1["id"]) {
+						bench.splice(i, 1);
+					}
+				}
+				starters.push(player1["id"]);
+				bench.push(player2["id"]);
 			}
 			else if (p2Pos.innerText == "Bench") {
 				p2Pos.innerText = p1Pos.innerText;
 				p1Pos.innerText = "Bench";
+
+				// Swap id's in starters/bench
+				for(var i = 0; i < starters.length; i++) {
+					if (starters[i]["id"] === player1["id"]) {
+						starters.splice(i, 1);
+					}
+				}
+				for (var i = 0; i < bench.length; i++) {
+					if (bench[i]["id"] === player2["id"]) {
+						bench.splice(i, 1);
+					}
+				}
+				starters.push(player2);
+				bench.push(player1);
 			}
 		}
 
@@ -44,4 +83,8 @@ function swapPlayers(player) {
 		player2 = null;
 		button.classList.remove("Selected");
 	}
+}
+
+function submitRoster() {
+	call()
 }

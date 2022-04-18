@@ -21,6 +21,10 @@
 	</div>
 {% endblock %}
 
+{% block body_attrs %}
+	onload="loadRoster({{ team }}, {{ bench }});"
+{% endblock %}
+
 {% block body %}
 	{% if session["username"] == teamOwner %}
 		<h2>Current Roster</h2>
@@ -53,6 +57,7 @@
 				</tr>
 			{% endfor %}
 		</table>
+		<button id="rosterButton" class="fRight" type="button" onclick="submitRoster()">Submit roster changes.</button>
 	{% elif session["username"] %}
 		<h2>Current Roster</h2>
 		<table class="fCenter">

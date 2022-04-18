@@ -1,6 +1,6 @@
 """This file contains operations for accessing datastore"""
 from google.cloud import datastore
-from user import User
+from FunkyFantasyHosting.user import User
 
 """Basic CRUD operations"""
 def retrieve_entity(id, kind='user'):

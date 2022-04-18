@@ -1,4 +1,4 @@
-import league, matchup, player, playoffs, team
+import FunkyFantasyHosting.league, FunkyFantasyHosting.matchup, FunkyFantasyHosting.player, FunkyFantasyHosting.playoffs, FunkyFantasyHosting.team
 
 #Define the type of leagueList, which is a list of leagues
 leagueListType = 'list[league.League]'

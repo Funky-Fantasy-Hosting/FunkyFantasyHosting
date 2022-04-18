@@ -234,3 +234,7 @@ button:hover {
 #awayTeam .Points, #homeTeam .Points, #awayBench .Points, #homeBench .Points {
 	width: 10%;
 }
+
+#rosterButton {
+	margin-right: 40px;
+}
