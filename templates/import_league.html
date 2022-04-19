@@ -23,6 +23,7 @@
 		{% if message %}
 			<h3>{{ message }}</h3>
 		{% endif %}
+		<h4>{% block h4 %}Enter the leagueID and league type for your imported league{% endblock %}</h4>
 		<form action="" method="post">
 			<p class="form">Select League Type:</p>
 			<input type="radio" id="guillotine" name="league_type" value="0">

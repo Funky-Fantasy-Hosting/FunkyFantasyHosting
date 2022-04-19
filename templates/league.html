@@ -19,6 +19,7 @@
 
 {% block body %}
 	{% if session["username"] %}
+		<h3><a href="/freeAgents">Click here to view your league's available free agents.</a></h3>
 		<div class="container">
 			<div>
 				<table class="fCenter" id="standings">
@@ -29,7 +30,7 @@
 					{% for team in teams %}
 						<tr class="rBorder">
 							<td><a href="/team/{{ session['leagueID'] }}/{{ team.name}}">{{ team.name }}</a></td>
-							<td>{{ team.wins }} - {{ team.loses }}</td>
+							<td>{{ team.wins }} - {{ team.losses }}</td>
 						</tr>
 					{% endfor %}
 				</table>
@@ -47,6 +48,7 @@
 				</table>
 			</div>
 		</div>
+
 	{% else %}
 		<h2 class="fCenter">Must be logged in to view page.</h2>
 	{% endif %}
