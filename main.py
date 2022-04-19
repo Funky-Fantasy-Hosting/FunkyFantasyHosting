@@ -67,14 +67,11 @@ def join_league():
 def account_screen(userTeams=None):
 	if "username" in session:
 		#TODO Call method to populate a table representing list of leagues a user belongs to
-		#For now displays a hyptothetical list of leagues made by Connor
+		#For now displays the hypothetical test league the group members belong to, and a random team from that league
 		testLeague = league.League(721301807)
 		teams = testLeague.get_teams()
 		userTeams = [
-			{"league": "Atlantic", "team": teams[0].get_name(), "record": "23-33"},
-			{"league": "Metropolitan", "team": teams[1].get_name(), "record": "40-17"},
-			{"league": "Central", "team": teams[2].get_name(), "record": "24-32"},
-			{"league": "Pacific", "team": teams[3].get_name(), "record": "36-28"},
+			{"league": "721301807", "team": teams[0].get_name(), "record": "0-0"}
 		]
 		if request.method == "POST":
 			#TODO modeify the way changing an active league is done by the user, will require cooresponding changes to account.html
@@ -100,12 +97,14 @@ def leagues_screen(leagueName=None):
 	if "leagueID" in session:
 		# TODO Call function to load in standings cooresponding table data for league, for now loads sample data made by connor
 		# TODO: Convert example lists to database calls
+		testLeague = league.League(721301807)
+		teams = testLeague.get_teams()
+		teams[0].get_name()
 		standings = [
-			{"name": "Pittsburgh Penguins", "wins": "40", "loses": "17"},
-			{"name": "Washington Capitals", "wins": "36", "loses": "28"},
-			{"name": "Philadelphia Flyers", "wins": "24", "loses": "32"},
-			{"name": "New York Rangers", "wins": "23", "loses": "33"},
-		]
+			{"name": teams[0].get_name(), "wins": "0", "losses": "0"}]
+		for t in (range(len(teams) - 1)):
+			standings.append({"name": teams[t+1].get_name(), "wins": "0", "losses": "0"}); 
+		
 		matchups = [
 			{"matchId": "1", "home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
 			{"matchId": "2", "home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
