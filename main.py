@@ -43,7 +43,7 @@ def import_league():
 	else:
 		# Grab League information from ESPN
 		# df_league_table = pull_new_league(request.form["league_id"], 2) 	# example of new league
-		league.League.import_league(request.form["league_id"], int(request.form["league_type"]))
+		league.League.import_league(request.form["league_id"], int(request.form["league_type"]), 5)
 		return render_template("import_successful.html", league_type=request.form["league_type"], league_id=request.form["league_id"])
 
 # Join League Screen
