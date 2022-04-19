@@ -1,4 +1,6 @@
-import team, user, player, matchup, playoffs, bigquery_fun
+from ast import IsNot
+from . import team, user, player, matchup, playoffs, bigquery_fun
+from .ESPN_endpoints import league_api_endpoints
 
 class League:
 
@@ -12,11 +14,16 @@ class League:
 
     def __init__(self, id):
         self.id = id
-
-        lg_df = bigquery_fun.get_league_df(id) #The league dataframe
-        tm_df = bigquery_fun.get_team_df(id) #The team dataframe
-        #pl_df = bigquery_fun.get_player_df(id) #The player dataframe
-        commish_df = lg_df.loc[lg_df['league_commish'] == 1]
+        try:
+            lg_df = bigquery_fun.get_league_df(id) #The league dataframe
+            tm_df = bigquery_fun.get_team_df(id) #The team dataframe
+            pl_df = bigquery_fun.get_player_df(id) #The player dataframe
+            pl_info_df = bigquery_fun.get_player_info()
+            commish_df = lg_df.loc[lg_df['league_commish'] == 1]
+            pl_info_df.set_index("id", inplace = True)
+        except Exception:
+            print("Import error")
+            return None
 
         self.name = "Placeholder"
         self.type = lg_df.iloc[0]['league_type']
@@ -28,8 +35,12 @@ class League:
 
         self.rosterMax = 10
         self.commish = commish_df.iloc[0]['user_ids']
+        self.playerList = []
         #populate the player list
-        self.playerList = None
+        for x in range(len(pl_df.index)):
+            pid = str(pl_df.iloc[x].loc['player_id'])
+            playerToAdd = player.Player(pl_df.iloc[x], pl_info_df.loc[pid])
+            self.playerList.append(playerToAdd)
         self.rosterSettings = None
         self.scoringSettings = None
         self.memberSettings = None
@@ -96,7 +107,7 @@ class League:
                 return True
             index += 1
         return False
-
+        
     def find_team(self, id):
         index = 0
         for tm in self.teamList:
@@ -106,11 +117,7 @@ class League:
         return -1
 
     #Remove the last place team from the league
-    def guillotine_team(self):
-        self.sort_team_list()
-        return self.remove_team(self.teamList(0))
-
-    def set_scoring():
+    def guillotine_team(self): 
         return None
 
     def set_matchup(self, homeTeam, awayTeam, week):
@@ -142,5 +149,13 @@ class League:
     def set_vampire_settings():
         return None
 
+    def import_league(lid, ltype, uid, week = 1):
+        try:
+            league_api_endpoints.add_new_league(lid, ltype, week)
+            league_api_endpoints.update_user(lid, uid, 1)
+            return True
+        except Exception:
+            print(Exception)
+            return Exception
 
 

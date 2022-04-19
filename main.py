@@ -2,10 +2,10 @@
 from flask import Flask, request, abort, url_for, redirect, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
-import user as User
-from data_access import *
+from . import user as User
+from .data_access import *
 import bcrypt
-import league, team, user, player, matchup, playoffs, bigquery_fun
+from . import league, team, user, player, matchup, playoffs, bigquery_fun
 
 #from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
@@ -43,6 +43,7 @@ def import_league():
 	else:
 		# Grab League information from ESPN
 		# df_league_table = pull_new_league(request.form["league_id"], 2) 	# example of new league
+		league.League.import_league(request.form["league_id"], int(request.form["league_type"]))
 		return render_template("import_successful.html", league_type=request.form["league_type"], league_id=request.form["league_id"])
 
 # Join League Screen
@@ -68,7 +69,9 @@ def account_screen(userTeams=None):
 	if "username" in session:
 		#TODO Call method to populate a table representing list of leagues a user belongs to
 		#For now displays a hyptothetical list of leagues made by Connor
+		print("getting league")
 		testLeague = league.League(721301807)
+		print("got league")
 		teams = testLeague.get_teams()
 		userTeams = [
 			{"league": "Atlantic", "team": teams[0].get_name(), "record": "23-33"},
@@ -95,6 +98,7 @@ def account_screen(userTeams=None):
 @app.route("/league")
 @app.route("/league/<leagueName>")
 def leagues_screen(leagueName=None):
+	print("HERE")
 	if leagueName is not None:
 		session["leagueID"] = leagueName
 	if "leagueID" in session:

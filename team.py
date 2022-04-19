@@ -1,4 +1,4 @@
-import league, matchup, player, playoffs, user
+from . import league, matchup, player, playoffs, user
 
 #Defining the type of playerList, which is a list of players
 playerListType = 'list[player.Player]'
