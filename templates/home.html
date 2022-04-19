@@ -20,9 +20,11 @@
 {% block body %}
 	{% if session["username"] %}
 		<h3> Welcome back {{ session["username"] }}! We hope you continue to enjoy Funky Fantasy Hosting!</h3>
+		<h3><a href="/new_league">Click here to import a league from ESPN(commisioner).</a></h3>
+		<h3><a href="/join_league">Click here to join an already imported league from ESPN(member).</a></h3>
 	{% else %}
 		<h3> Welcome to Funky Fantasy Hosting! </h3>
-		<p>If you are new here click the create account option to get started! </p>
-		<p>If you are a returning member, welcome back! Please click log in to enter your account </p>
+		<h3>If you are new here click the create account option to get started! </h3>
+		<h3>If you are a returning member, welcome back! Please click log in to enter your account </h3>
 	{% endif %}
 {% endblock %}
