@@ -2,10 +2,10 @@
 from flask import Flask, request, abort, url_for, redirect, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
-import user as User
-from data_access import *
+from . import user as User
+from .data_access import *
 import bcrypt
-import league, team, user, player, matchup, playoffs, bigquery_fun
+from . import league, team, user, player, matchup, playoffs, bigquery_fun
 
 #from FunkyFantasyHosting.ESPN_endpoints.EXAMPLE_league_pull_api import *
 
@@ -43,6 +43,7 @@ def import_league():
 	else:
 		# Grab League information from ESPN
 		# df_league_table = pull_new_league(request.form["league_id"], 2) 	# example of new league
+		league.League.import_league(request.form["league_id"], int(request.form["league_type"]), 5)
 		return render_template("import_successful.html", league_type=request.form["league_type"], league_id=request.form["league_id"])
 
 # Join League Screen
@@ -66,8 +67,6 @@ def join_league():
 @app.route("/account", methods=["GET", "POST"])
 def account_screen(userTeams=None):
 	if "username" in session:
-		#TODO Call method to populate a table representing list of leagues a user belongs to
-		#For now displays the hypothetical test league the group members belong to, and a random team from that league
 		testLeague = league.League(721301807)
 		teams = testLeague.get_teams()
 		userTeams = [

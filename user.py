@@ -1,4 +1,4 @@
-import league, matchup, player, playoffs, team
+from . import league, matchup, player, playoffs, team
 
 #Define the type of leagueList, which is a list of leagues
 leagueListType = 'list[league.League]'
@@ -18,6 +18,9 @@ class User:
 
     def logout():
         return None
+
+    def get_username(self):
+        return self.username
 
     def add_league(self, league):
         self.leagueList.add(league)
