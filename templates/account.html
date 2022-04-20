@@ -27,13 +27,21 @@
 				<th class="Team">Team</th>
 				<th class="Record">W-L</th>
 			</tr>
-			{% for team in teams %}
+			{% if teams %}
+				{% for team in teams %}
+					<tr class="rBorder">
+						<td class="League"><a href="/league/{{ team.league }}">{{ team.league }}</a></td>
+						<td class="Team rBorder"><a href="/team/{{ team.league }}/{{ team.team }}">{{ team.team }}</a></td>
+						<td class="Record"><a href="/league/{{ team.league }}">{{ team.record }}</a></td>
+					</tr>
+				{% endfor %}
+			{% else %}
 				<tr class="rBorder">
-					<td class="League"><a href="/league/{{ team.league }}">{{ team.league }}</a></td>
-					<td class="Team rBorder"><a href="/team/{{ team.league }}/{{ team.team }}">{{ team.team }}</a></td>
-					<td class="Record"><a href="/league/{{ team.league }}">{{ team.record }}</a></td>
+					<td>NA</td>
+					<td>NA</td>
+					<td> NA</td>
 				</tr>
-			{% endfor %}
+			{% endif %}
 		</table>
 		<h3><a href="/new_league">Click here to import a league from ESPN(commisioner).</a></h3>
 		<h3><a href="/join_league">Click here to join an already imported league from ESPN(member).</a></h3>

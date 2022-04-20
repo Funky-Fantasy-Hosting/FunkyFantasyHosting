@@ -27,12 +27,19 @@
 						<th>Team Name</th>
 						<th>Record</th>
 					</tr>
-					{% for team in teams %}
+					{% if teams %}
+						{% for team in teams %}
+							<tr class="rBorder">
+								<td><a href="/team/{{ session['leagueID'] }}/{{ team.name}}">{{ team.name }}</a></td>
+								<td>{{ team.wins }} - {{ team.losses }}</td>
+							</tr>
+						{% endfor %}
+					{% else %}
 						<tr class="rBorder">
-							<td><a href="/team/{{ session['leagueID'] }}/{{ team.name}}">{{ team.name }}</a></td>
-							<td>{{ team.wins }} - {{ team.losses }}</td>
+							<td>N/A</td>
+							<td>N/A</td>
 						</tr>
-					{% endfor %}
+					{% endif %}
 				</table>
 			</div>
 		</div>
