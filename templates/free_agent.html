@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}FFH - Account{% endblock %}
+{% block title %}FFH - FA{% endblock %}
 
 {% block navbar %}
 	<div class="topnav">
@@ -20,17 +20,17 @@
 {% block body %}
 	{% if session["username"] %}
 		<!-- There is a user logged in. -->
-		<h2>Welcome, {{ session["username"] }}</h2>
+		<h2>Free Agents</h2>
 		<table class="fCenter">
 			<tr>
 				<th class="FAPlayer">Player</th>
-				<th class="Team">Team</th>
+				<th class="Team">Position</th>
 				<th class="Pos">Add</th>
 			</tr>
 			{% for player in freeAgents %}
 				<tr class="rBorder">
 					<td class="League">{{ player.name }}</a></td>
-					<td class="Team rBorder">{{ player.nflTeam }}</td>
+					<td class="Team rBorder">{{ player.position }}</td>
 					<td class="Pos">Add Player</td>
 				</tr>
 			{% endfor %}
