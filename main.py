@@ -73,9 +73,6 @@ def account_screen(userTeams=None):
 			{"league": "721301807", "team": teams[0].get_name(), "record": "0-0"}
 		]
 		if request.method == "POST":
-			#TODO modeify the way changing an active league is done by the user, will require cooresponding changes to account.html
-			#For now user is asked to type in the league they wish to make active. Any of the names listed in the hypothetitcal 
-			#table of leagues will add a leagueID session variable, thus giving access to the league screen
 			leagueID = request.form['leagueID'] 
 			if leagueID == "Atlantic" or leagueID == "Metropolitan" or leagueID == "Central" or leagueID == "Pacific":
 				session["leagueID"] = request.form['leagueID']
@@ -94,21 +91,13 @@ def leagues_screen(leagueName=None):
 	if leagueName is not None:
 		session["leagueID"] = leagueName
 	if "leagueID" in session:
-		# TODO Call function to load in standings cooresponding table data for league, for now loads sample data made by connor
-		# TODO: Convert example lists to database calls
 		testLeague = league.League(721301807)
 		teams = testLeague.get_teams()
-		teams[0].get_name()
 		standings = [
 			{"name": teams[0].get_name(), "wins": "0", "losses": "0"}]
 		for t in (range(len(teams) - 1)):
 			standings.append({"name": teams[t+1].get_name(), "wins": "0", "losses": "0"}); 
-		
-		matchups = [
-			{"matchId": "1", "home": "Pittsburgh Penguins", "away": "New York Rangers", "home_points": "3", "away_points": "2"},
-			{"matchId": "2", "home": "Philadelphia Flyers", "away": "Washington Capitals", "home_points": "0", "away_points": "0"}
-		]
-		return render_template("league.html", teams=standings, matchups=matchups, week=5)
+		return render_template("league.html", teams=standings)
 	else:
 		return redirect(url_for("account_screen"))
 		
@@ -117,16 +106,14 @@ def leagues_screen(leagueName=None):
 def free_Agent_Screen(freeAgents=None):
 	if "username" in session:
 		if "leagueID" in session:
-			#TODO Call method to populate a table representing list of players not belonging a team for a particiular league
-			#For now hypothetical list created below
+			testLeague = league.League(721301807)
+			players = testLeague.get_free_agents()
 			freeAgents = [
-				{"name": "Zach Wilson", "nflTeam": "New York Jets"},
-				{"name": "Rashaad Penny", "nflTeam": "Seattle Seahawks"},
-				{"name": "Randall Cobb", "nflTeam": "Green Bay Packers"},
-				{"name": "Cole Kmet", "nflTeam": "Chicago Bears"},
-			]
+				{"name": players[0].name, "position": players[0].get_pos()}
+				]
+			for t in (range(len(players) - 1)):
+				freeAgents.append({"name": players[t+1].name, "position": players[t+1].get_pos()}); 
 			if request.method == "POST":
-				#TODO have button trigger call to update DB
 				return redirect(url_for("league_screen"))
 			else:
 				return render_template("free_agent.html", freeAgents=freeAgents)
