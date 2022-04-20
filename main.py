@@ -67,11 +67,15 @@ def join_league():
 @app.route("/account", methods=["GET", "POST"])
 def account_screen(userTeams=None):
 	if "username" in session:
-		testLeague = league.League(721301807)
-		teams = testLeague.get_teams()
-		userTeams = [
-			{"league": "721301807", "team": teams[0].get_name(), "record": "0-0"}
-		]
+		try:
+			testLeague = league.League(721301807)
+			teams = testLeague.get_teams()
+		except AttributeError as error:
+			print("League not defined")
+		else:
+			userTeams = [
+				{"league": "721301807", "team": teams[0].get_name(), "record": "0-0"}
+			]
 		if request.method == "POST":
 			leagueID = request.form['leagueID'] 
 			if leagueID == "Atlantic" or leagueID == "Metropolitan" or leagueID == "Central" or leagueID == "Pacific":
@@ -91,13 +95,18 @@ def leagues_screen(leagueName=None):
 	if leagueName is not None:
 		session["leagueID"] = leagueName
 	if "leagueID" in session:
-		testLeague = league.League(721301807)
-		teams = testLeague.get_teams()
-		standings = [
-			{"name": teams[0].get_name(), "wins": "0", "losses": "0"}]
-		for t in (range(len(teams) - 1)):
-			standings.append({"name": teams[t+1].get_name(), "wins": "0", "losses": "0"}); 
-		return render_template("league.html", teams=standings)
+		try:
+			testLeague = league.League(721301807)
+			teams = testLeague.get_teams()
+		except AttributeError as error:
+			print("League not defined")
+		else:
+			standings = [
+				{"name": teams[0].get_name(), "wins": "0", "losses": "0"}]
+			for t in (range(len(teams) - 1)):
+				standings.append({"name": teams[t+1].get_name(), "wins": "0", "losses": "0"}); 
+			return render_template("league.html", teams=standings)
+		return render_template("league.html", teams=None)
 	else:
 		return redirect(url_for("account_screen"))
 		
@@ -106,13 +115,17 @@ def leagues_screen(leagueName=None):
 def free_Agent_Screen(freeAgents=None):
 	if "username" in session:
 		if "leagueID" in session:
-			testLeague = league.League(721301807)
-			players = testLeague.get_free_agents()
-			freeAgents = [
-				{"name": players[0].name, "position": players[0].get_pos()}
-				]
-			for t in (range(len(players) - 1)):
-				freeAgents.append({"name": players[t+1].name, "position": players[t+1].get_pos()}); 
+			try:
+				testLeague = league.League(721301807)
+				players = testLeague.get_free_agents()
+			except:
+				print("League not defined")
+			else:
+				freeAgents = [
+					{"name": players[0].name, "position": players[0].get_pos()}
+					]
+				for t in (range(len(players) - 1)):
+					freeAgents.append({"name": players[t+1].name, "position": players[t+1].get_pos()}); 
 			if request.method == "POST":
 				return redirect(url_for("league_screen"))
 			else:
