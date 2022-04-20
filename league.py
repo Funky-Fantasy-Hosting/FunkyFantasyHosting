@@ -117,7 +117,11 @@ class League:
         return -1
 
     #Remove the last place team from the league
-    def guillotine_team(self): 
+    def guillotine_team(self):
+        self.sort_team_list()
+        return self.remove_team(self.teamList(0))
+
+    def set_scoring():
         return None
 
     def set_matchup(self, homeTeam, awayTeam, week):
