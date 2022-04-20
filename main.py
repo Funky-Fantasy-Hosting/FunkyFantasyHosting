@@ -67,11 +67,7 @@ def join_league():
 @app.route("/account", methods=["GET", "POST"])
 def account_screen(userTeams=None):
 	if "username" in session:
-		#TODO Call method to populate a table representing list of leagues a user belongs to
-		#For now displays a hyptothetical list of leagues made by Connor
-		print("getting league")
 		testLeague = league.League(721301807)
-		print("got league")
 		teams = testLeague.get_teams()
 		userTeams = [
 			{"league": "721301807", "team": teams[0].get_name(), "record": "0-0"}
@@ -95,7 +91,6 @@ def account_screen(userTeams=None):
 @app.route("/league")
 @app.route("/league/<leagueName>")
 def leagues_screen(leagueName=None):
-	print("HERE")
 	if leagueName is not None:
 		session["leagueID"] = leagueName
 	if "leagueID" in session:
