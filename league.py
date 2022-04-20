@@ -71,6 +71,16 @@ class League:
     def get_teams(self):
         return self.teamList
 
+    def get_players(self):
+        return self.playerList
+
+    def get_free_agents(self):
+        faList = []
+        for player in self.playerList:
+            if(player.get_league_team() == 0):
+                faList.append(player)
+        return faList
+
     #No checking is happening, we need to check to make sure that all the steps that happen in this function actually happen
     #If dropping player 2 fails somehow, we have to be able to undo or not do the dropping of player 1
     def trade_player(self, player1, player2):
