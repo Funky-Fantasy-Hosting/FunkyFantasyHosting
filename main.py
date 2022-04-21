@@ -62,16 +62,15 @@ def join_league():
 				#return render_template("invalid_join_league.html")
 
 			try:
-				print(request.form["league_id"])
 				testLeague = league.League(request.form["league_id"])
-				print(request.form["team_name"])
+				print("here")
 				team = testLeague.find_team_name(request.form["team_name"])
-				print (team.name)
-				print(session['uid'])
+				print("here")
 				team.set_owner(session['uid'])
-				print(session['leagues'])
+				print("here")
+				league.League.update_team_owner(testLeague.get_id(), session['uid'], team.get_id())
 				session['leagues'].append(request.form["league_id"])
-				print(session['leagues'])
+				print("here")
 				session.modified = True
 			except Exception:
 				print(Exception)
@@ -87,12 +86,13 @@ def join_league():
 def account_screen(userTeams=None):
 	if "username" in session:
 		userTeams = []
+		print("here")
 		print(session["leagues"])
 		try:
 			for x in session["leagues"]:
 				testLeague = league.League(x)
 				teams = testLeague.get_teams()
-				userTeams.append({"league": x, "team": teams[0].get_name(), "record": "0-0"})
+				userTeams.append({"league": x, "team": team.Team.get_team_with_owner(teams, session["uid"]).get_name(), "record": "0-0"})
 		except AttributeError as error:
 			print("League not defined")
 		if request.method == "POST":

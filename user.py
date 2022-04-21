@@ -51,6 +51,6 @@ class User:
     def get_id(self):
         id = 0
         for x in range(0, len(self.username)):
-            id += ord(self.username[x])
+            id += ord(self.username[x])/(x+1)
         return id
         

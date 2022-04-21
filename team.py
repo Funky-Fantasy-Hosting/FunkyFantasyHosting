@@ -22,7 +22,10 @@ class Team:
 
         bench = []
         start = []
+        print("here")
+        print(self.playerListID["BENCH"]["list"]["list"])
         for x in self.playerListID["BENCH"]["list"]["list"]:
+            print(x["item"]["item"])
             bench.append(x["item"]["item"])
         for x in self.playerListID["STARTER"]["list"]["list"]:
             start.append(x["item"]["item"])
@@ -52,6 +55,15 @@ class Team:
         self.owner = owner
         print(self.owner)
         return True
+
+    def get_owner(self):
+        return self.owner
+
+    def get_team_with_owner(teamList, owner):
+        for tm in teamList:
+            if(tm.get_owner() == owner):
+                return tm
+        return None
 
     def add_player_c(self, player):
         for x in self.playerListID["Bench"]:
