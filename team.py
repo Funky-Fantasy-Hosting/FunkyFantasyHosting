@@ -46,6 +46,13 @@ class Team:
     def get_starter(self):
         return self.playerListStarter
 
+    def set_owner(self, owner):
+        print(owner)
+        print(self.owner)
+        self.owner = owner
+        print(self.owner)
+        return True
+
     def add_player_c(self, player):
         for x in self.playerListID["Bench"]:
             if(x == player.get_id()):

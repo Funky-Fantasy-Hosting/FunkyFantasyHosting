@@ -22,21 +22,24 @@ class User:
     def get_username(self):
         return self.username
 
-    def add_league(self, league):
-        self.leagueList.add(league)
+    def get_leagueList(self):
+        return self.leagueList
+
+    def add_league(self, lid):
+        self.leagueList.add(lid)
         return True
 
-    def remove_league(self, league):
-        targetId = league.get_id
-        index = 0
-        for lge in self.leagueList:
-            id = lge.get_id()
-            if(id == targetId):
-                self.leagueList.pop(index)
-                return True
-            index += 1
+    # def remove_league(self, league):
+    #     targetId = league.get_id
+    #     index = 0
+    #     for lge in self.leagueList:
+    #         id = lge.get_id()
+    #         if(id == targetId):
+    #             self.leagueList.pop(index)
+    #             return True
+    #         index += 1
 
-        return False
+    #     return False
     
     def update_avatar(self, avatar):
         self.avatar = avatar
@@ -44,3 +47,10 @@ class User:
 
     def update_password():
         return None
+
+    def get_id(self):
+        id = 0
+        for x in range(0, len(self.username)):
+            id += ord(self.username[x])
+        return id
+        

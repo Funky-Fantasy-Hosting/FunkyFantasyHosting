@@ -1,4 +1,5 @@
 # Setup of importing/init comes from fl10_model.py
+from typing import List
 from flask import Flask, request, abort, url_for, redirect, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
@@ -59,6 +60,24 @@ def join_league():
 				#update DB, render template for updated account page
 			#else 
 				#return render_template("invalid_join_league.html")
+
+			try:
+				print(request.form["league_id"])
+				testLeague = league.League(request.form["league_id"])
+				print(request.form["team_name"])
+				team = testLeague.find_team_name(request.form["team_name"])
+				print (team.name)
+				print(session['uid'])
+				team.set_owner(session['uid'])
+				print(session['leagues'])
+				session['leagues'].append(request.form["league_id"])
+				print(session['leagues'])
+				session.modified = True
+			except Exception:
+				print(Exception)
+				return Exception
+
+
 			return redirect(url_for("account_screen"))
 	else: 
 		return render_template("account.html")
@@ -67,15 +86,15 @@ def join_league():
 @app.route("/account", methods=["GET", "POST"])
 def account_screen(userTeams=None):
 	if "username" in session:
+		userTeams = []
+		print(session["leagues"])
 		try:
-			testLeague = league.League(721301807)
-			teams = testLeague.get_teams()
+			for x in session["leagues"]:
+				testLeague = league.League(x)
+				teams = testLeague.get_teams()
+				userTeams.append({"league": x, "team": teams[0].get_name(), "record": "0-0"})
 		except AttributeError as error:
 			print("League not defined")
-		else:
-			userTeams = [
-				{"league": "721301807", "team": teams[0].get_name(), "record": "0-0"}
-			]
 		if request.method == "POST":
 			leagueID = request.form['leagueID'] 
 			if leagueID == "Atlantic" or leagueID == "Metropolitan" or leagueID == "Central" or leagueID == "Pacific":
@@ -221,6 +240,8 @@ def player(playerId=None):
 @app.route("/logout")
 def logout():
 	if "username" in session:
+		# entity = user_to_entity(session["user"])
+		# update_entity(entity)
 		session.clear()
 		return redirect(url_for("home"))
 	else:
@@ -245,6 +266,10 @@ def login_screen():
 				user2 = entity_to_user(entity)
 				if checkPassword(password, user2.password):
 					session['username'] = username
+					session['leagues'] = user2.get_leagueList()
+					if type(session['leagues']) != List:
+						session['leagues'] = []
+					session['uid']=user2.get_id()
 					return (redirect("/"))
 				else:
 					# Username and Password do not match
@@ -265,7 +290,7 @@ def create_account():
 			password = request.values.get('password')
 			screenname = request.values.get('screenname')
 			hashedPassword = createHashedPassword(password)
-			user = User(username, hashedPassword, screenname, None, None, None)
+			user = User(username, hashedPassword, screenname, [], [], None)
 
 			temp = get_user_entity(user)
 
@@ -277,6 +302,10 @@ def create_account():
 				entity = user_to_entity(user)
 				update_entity(entity)
 				session['username'] = username
+				session['leagues'] = user.get_leagueList()
+				if type(session['leagues']) != List:
+					session['leagues'] = []
+				session['uid']=user.get_id()
 				return (redirect("/"))
 	return (render_template("create_account.html"))
 

@@ -131,6 +131,14 @@ class League:
             index += 1
         return -1
 
+    def find_team_name(self, name):
+        print(name)
+        for tm in self.teamList:
+            print(tm.get_name())
+            if tm.get_name() == name:
+                print("found")
+                return tm
+
     #Remove the last place team from the league
     def guillotine_team(self):
         self.sort_team_list()
@@ -176,5 +184,9 @@ class League:
         except Exception:
             print(Exception)
             return Exception
+
+    def update_team_owner(lid, uid, tid):
+        league_api_endpoints.update_user(lid, uid, tid)
+        return True
 
 
