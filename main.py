@@ -122,10 +122,10 @@ def free_Agent_Screen(freeAgents=None):
 				print("League not defined")
 			else:
 				freeAgents = [
-					{"name": players[0].name, "position": players[0].get_pos()}
+					{"name": players[0].name, "link": players[0].link, "position": players[0].get_pos()}
 					]
 				for t in (range(len(players) - 1)):
-					freeAgents.append({"name": players[t+1].name, "position": players[t+1].get_pos()}); 
+					freeAgents.append({"name": players[t+1].name, "link": players[t+1].link, "position": players[t+1].get_pos()}); 
 			if request.method == "POST":
 				return redirect(url_for("league_screen"))
 			else:
@@ -150,6 +150,21 @@ def team(leagueName=None, teamName=None):
 		{"link": "https://www.espn.com/nfl/player/_/id/4361411/pat-freiermuth", "position": "TE", "name": "Pat Friermuth", "opp": "Browns", "points": 5},
 		{"link": "https://www.espn.com/nfl/player/_/id/3932905/diontae-johnson", "position": "WR", "name": "Diontae Johnson", "opp": "Browns", "points": 12},
 	]
+	lge = None
+	if(teamName != None):
+		lge = league.League(leagueName)
+		teamList = []
+		benchList = []
+	for x in lge.get_teams():
+		if x.get_name() == teamName:
+			print(len(x.get_bench()))
+			print(len(x.get_starter()))
+			for y in x.get_bench():
+				benchList.append({"link": y.get_link(), "position": y.get_pos(), "name": y.get_name(), "opp": "", "points": ""})
+			for y in x.get_starter():
+				benchList.append({"link": y.get_link(), "position": y.get_pos(), "name": y.get_name(), "opp": "", "points": ""})
+					
+			
 	return render_template("team.html", team=teamList, bench=benchList, league=leagueName, teamOwner="test")
 
 @app.route("/matchup/<matchupId>")

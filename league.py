@@ -33,6 +33,9 @@ class League:
             teamToAdd = team.Team(tm_df.iloc[x])
             self.teamList.append(teamToAdd)
 
+        self.teamList.sort(key = lambda x: x.get_id())
+        for x in self.teamList:
+            print(x.get_id())
         self.rosterMax = 10
         self.commish = commish_df.iloc[0]['user_ids']
         self.playerList = []
@@ -41,6 +44,8 @@ class League:
             pid = str(pl_df.iloc[x].loc['player_id'])
             playerToAdd = player.Player(pl_df.iloc[x], pl_info_df.loc[pid])
             self.playerList.append(playerToAdd)
+            if(playerToAdd.get_league_team() != 0):
+                self.teamList[playerToAdd.get_league_team()-1].add_player_c(playerToAdd)
         self.rosterSettings = None
         self.scoringSettings = None
         self.memberSettings = None

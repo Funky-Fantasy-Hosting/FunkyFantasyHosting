@@ -6,24 +6,59 @@ playerListType = 'list[player.Player]'
 
 class Team:
     def __init__(self, team_df):
+        self.playerListBench = []
+        self.playerListStarter = []
         self.id = team_df.loc['team_id']
         self.name = team_df.loc['team_name']
-        self.playerList = team_df.loc['lineup']
+        self.playerListID = team_df.loc['lineup']
         self.startingLineup = None
         self.owner = team_df.loc['user_id'] #The ID of the user that owns this team.
         self.nextMatchup = None
         self.status = None
         self.FAABBudget = None
         self.waiverPriority = None
-        self.rosterSize = len(self.playerList)
         self.record = team_df.loc['record']
         self.rank = None
+
+        bench = []
+        start = []
+        for x in self.playerListID["BENCH"]["list"]["list"]:
+            bench.append(x["item"]["item"])
+        for x in self.playerListID["STARTER"]["list"]["list"]:
+            start.append(x["item"]["item"])
+
+        self.playerListID = {
+            "Bench": bench,
+            "Starter": start
+        }
+
+        self.rosterSize = len(self.playerListID)
 
     def get_id(self):
         return self.id
 
     def get_name(self):
         return self.name
+
+    def get_bench(self):
+        return self.playerListBench
+
+    def get_starter(self):
+        return self.playerListStarter
+
+    def add_player_c(self, player):
+        for x in self.playerListID["Bench"]:
+            if(x == player.get_id()):
+                self.playerListBench.append(player)
+                return True
+
+        for x in self.playerListID["Starter"]:
+            if(x == player.get_id()):
+                self.playerListBench.append(player)
+                return True
+        
+        print("Wrong??")
+        return False
 
 
     #Returns an integer representing the record of the team so it can be ordered with other teams
