@@ -63,14 +63,11 @@ def join_league():
 
 			try:
 				testLeague = league.League(request.form["league_id"])
-				print("here")
 				team = testLeague.find_team_name(request.form["team_name"])
-				print("here")
 				team.set_owner(session['uid'])
-				print("here")
-				league.League.update_team_owner(testLeague.get_id(), session['uid'], team.get_id())
+				#league.League.update_team_owner(testLeague.get_id(), session['uid'], team.get_id())
 				session['leagues'].append(request.form["league_id"])
-				print("here")
+				session['teams'].append(team.get_name())
 				session.modified = True
 			except Exception:
 				print(Exception)
@@ -89,10 +86,12 @@ def account_screen(userTeams=None):
 		print("here")
 		print(session["leagues"])
 		try:
+			ind = 0
 			for x in session["leagues"]:
 				testLeague = league.League(x)
-				teams = testLeague.get_teams()
-				userTeams.append({"league": x, "team": team.Team.get_team_with_owner(teams, session["uid"]).get_name(), "record": "0-0"})
+				#teams = testLeague.get_teams()
+				userTeams.append({"league": x, "team": session['teams'][ind], "record": "0-0"})
+				ind += 1
 		except AttributeError as error:
 			print("League not defined")
 		if request.method == "POST":
@@ -269,6 +268,7 @@ def login_screen():
 					session['leagues'] = user2.get_leagueList()
 					if type(session['leagues']) != List:
 						session['leagues'] = []
+					session['teams'] = []
 					session['uid']=user2.get_id()
 					return (redirect("/"))
 				else:
