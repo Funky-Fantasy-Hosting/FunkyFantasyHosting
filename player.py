@@ -16,6 +16,7 @@ class Player:
         self.leagueTransactionHistory = None
         self.fantasyPoints = None
         self.news = None
+        self.link = row.loc['player_overview']
         self.playerBio = None
         self.vunerableFlag = None
         self.headshot = row.loc['player_headshot']
@@ -26,8 +27,14 @@ class Player:
     def get_id(self):
         return self.id
 
+    def get_name(self):
+        return self.name
+
     def get_league_team(self):
         return self.leagueTeam
+    
+    def get_link(self):
+        return self.link
 
     def get_headshot(self):
         return self.headshot
