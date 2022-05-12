@@ -1,12 +1,11 @@
 # FunkyFantasyHosting
-Our Software Engineering project. <insert description here written by someone who understands what we're doing>
+Our Software Engineering project. 
 
-Link to our SRS document https://docs.google.com/document/d/18NrsWcBkmGw1IVi9h9_hrusEn-hX39au/edit?usp=sharing&ouid=107440439754087862810&rtpof=true&sd=true
+Link to our [SRS document](https://docs.google.com/document/d/1MxkAyRQ9vqesaHWG9CkF1JhxgJS4AfMEdNwubAL4py4/edit?usp=sharing)
 
-# How to run espntest.js
-Install NodeJS :https://nodejs.org/en/download/
 
-Go to the main directory in terminal and run this command: node espntest.js
+Funky Fantasy Hosting is a new tool for playing fantasy football. It takes the form of a website that can take your rosters that were drafted on the Sleeper platform, and manages them according to new and unique rule sets. The site will pull real world NFL data from the ESPN API. This site will allow fantasy football to be played in novel ways to break the monotony of traditional leagues.
+
 
 # How to run the actual site (Different sets of parenthesis are for different machines, if one doesn't work try another)
 0. Create your python enviornment -ONLY DO THIS ONCE- (python3 -m venv nameOfEnviornment)
